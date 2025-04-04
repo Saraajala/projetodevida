@@ -1,0 +1,155 @@
+/* Importando fontes */
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Abel&display=swap');
+
+:root {
+    --cor-primaria: rgba(103, 22, 19, 1);
+    --cor-secundaria: rgba(47, 19, 23, 0.6);
+    --cor-terciaria: rgba(229, 223, 205, 1);
+    --cor-quaternaria: rgba(255, 255, 255, 1);
+}
+
+body {
+    font-family: "Newsreader", serif;
+    background: var(--cor-primaria);
+    color: var(--cor-quaternaria);
+    text-align: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Alinhamento do cabeçalho */
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header nav ul {
+    display: flex;
+    gap: 15px;
+    list-style: none;
+}
+
+.header a {
+    text-decoration: none;
+    color: var(--cor-quaternaria);
+    font-weight: bold;
+    padding: 8px 15px;
+    border: 1px solid var(--cor-quaternaria);
+    border-radius: 20px;
+}
+
+.header a:hover {
+    background-color: var(--cor-terciaria);
+    color: var(--cor-primaria);
+}
+
+/* Centralizando tudo */
+.container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+}
+
+/* Posicionando o SVG acima da logo */
+.svg-container {
+    position: absolute;
+    top: 80px; /* Sobe um pouco a escrita */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+}
+
+/* Ajuste da Logo */
+.logo {
+    width: 300px;
+    position: relative;
+    top: 50px; /* Mantém a logo no centro abaixo do texto */
+}
+
+/* Botão */
+.botao {
+    display: inline-block;
+    margin-top: 120px;
+    background: transparent;
+    border: 1px solid var(--cor-quaternaria);
+    padding: 10px 20px;
+    border-radius: 20px;
+    color: var(--cor-quaternaria);
+    font-size: 1rem;
+    font-family: "Abel", serif;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.botao:hover {
+    background: var(--cor-terciaria);
+    color: var(--cor-primaria);
+}
+
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilização do cabeçalho */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Distribui os elementos */
+    padding: 10px 20px;
+    background: #671613; /* Cor do fundo (ajuste se necessário) */
+}
+
+/* Logo alinhada à esquerda */
+.logo2 {
+    height: 80px; /* Ajuste conforme necessário */
+}
+
+/* Centralizando a navegação */
+.menu-central {
+    display: flex;
+    list-style: none;
+    gap: 20px; /* Espaço entre os itens */
+}
+
+.menu-central a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    padding: 10px 15px;
+    transition: background 0.3s;
+}
+
+.menu-central a:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Link "Voltar" à direita */
+.voltar {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.voltar:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.escrita-sobre{
+    font-family: "Newsreader", serif;
+    color: var(--cor-quaternaria);
+    font-size: 80px;
+}
