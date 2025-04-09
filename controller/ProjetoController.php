@@ -1,7 +1,5 @@
 <?php
-
 require_once 'C:/Turma2/xampp/htdocs/projetodevida/model/ProjetoModel.php';
-session_start();
 
 class ProjetoController {
     private $projetoModel;
@@ -11,26 +9,53 @@ class ProjetoController {
     }
 
     // USUÁRIO
-    public function cadastrar($nome, $email, $data_nascimento, $senha) {
-        $res = $this->projetoModel->cadastrar($nome, $email, $data_nascimento, $senha);
-        echo $res ? "Usuário cadastrado com sucesso!" : "Erro ao cadastrar usuário!";
+    public function cadastrar($nome, $email, $senha, $data_nascimento) {
+        $usuarioExistente = $this->projetoModel->buscarUsuarioPorEmail($email);
+        
+        if ($usuarioExistente) {
+            return [
+                'sucesso' => false,
+                'mensagem' => 'Este e-mail já está cadastrado.'
+            ];
+        }
+    
+        $resultado = $this->projetoModel->cadastrar($nome, $email, $senha, $data_nascimento);
+    
+        if ($resultado) {
+            return [
+                'sucesso' => true,
+                'mensagem' => 'Usuário cadastrado com sucesso!'
+            ];
+        } else {
+            return [
+                'sucesso' => false,
+                'mensagem' => 'Erro ao cadastrar usuário.'
+            ];
+        }
     }
 
     public function login($email, $senha) {
-        $usuario = $this->projetoModel->login($email, $senha);
-        if ($usuario) {
-            $_SESSION["usuario_id"] = $usuario["id"];
-            $_SESSION["nome"] = $usuario["nome"];
-            header("Location: ../index.php");
-        } else {
-            echo "Login inválido!";
+        $usuario = $this->projetoModel->login($email);
+
+        if(!$usuario){
+            return $_SESSION['msg'] = "erro usuario";
+        }
+        
+        if(!password_verify($senha, $usuario['senha'])){
+            return $_SESSION['msg'] = "erro senha";  
+        }
+
+        if($usuario && password_verify($senha, $usuario['senha'])){
+        $_SESSION['msg'] = "sucesso";
+        return $usuario;
         }
     }
+    
 
     public function logout() {
         session_unset();
         session_destroy();
-        header("Location: ../login.php");
+        header("Location: ../inicio.php");
     }
 
     public function redefinirSenhaDireta() {

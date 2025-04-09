@@ -11,10 +11,12 @@
     </form>
 
     <?php if (isset($_SESSION["msg"])): ?>
-        <p style="color: <?= $_SESSION["tipo_msg"] === "sucesso" ? 'green' : 'red' ?>;">
+        <p style="color: <?= $_SESSION["msg"] === "sucesso" ? 'green' : 'red' ;
+        ?>">
             <?= $_SESSION["msg"] ?>
         </p>
-        <?php unset($_SESSION["msg"], $_SESSION["tipo_msg"]); ?>
+        <?php unset($_SESSION["msg"]); ?>
+        
     <?php endif; ?>
 
     <a href="redefinir_senha.php">Esqueci minha senha</a>

@@ -8,21 +8,28 @@ class ProjetoModel {
     }
 
     // USUÁRIO
-    public function cadastrar($nome, $email, $data_nascimento, $senha) {
-        $senhaCriptografada = password_hash($senha, PASSWORD_BCRYPT);
-        $sql = "INSERT INTO usuarios (nome, email, data_nascimento, senha) VALUES (?, ?, ?, ?)";
+    public function cadastrar($nome, $email, $senha, $data_nascimento,) {
+        $senhaCriptografada = password_hash($senha, PASSWORD_DEFAULT);
+        $sql = "INSERT INTO usuarios (nome, email, senha, data_nascimento) VALUES (:nome, :email, :senha, :data_nascimento)";
         $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([$nome, $email, $data_nascimento, $senhaCriptografada]);
+        $stmt->bindParam(':nome', $nome);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':senha', $senhaCriptografada);
+        $stmt->bindParam(':data_nascimento', $data_nascimento);
+        return $stmt->execute();
     }
 
-    public function login($email, $senha) {
-        $sql = "SELECT * FROM usuarios WHERE email = ?";
+    public function login($email) {
+        $sql = "SELECT * FROM usuarios WHERE email = :email";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([$email]);
-        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        return ($usuario && password_verify($senha, $usuario['senha'])) ? $usuario : false;
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->execute();
+    
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    
     }
+    
+    
 
     public function buscarUsuarioPorEmail($email) {
         $stmt = $this->pdo->prepare("SELECT * FROM usuarios WHERE email = ?");

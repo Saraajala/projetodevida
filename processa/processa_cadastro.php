@@ -5,7 +5,6 @@ require_once '../controller/ProjetoController.php';
 
 $controller = new ProjetoController($pdo);
 
-// Verifica se os dados foram enviados corretamente
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = $_POST['nome'] ?? '';
     $email = $_POST['email'] ?? '';
@@ -17,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($resultado['sucesso']) {
         $_SESSION['msg'] = $resultado['mensagem'];
         $_SESSION['tipo_msg'] = 'sucesso';
-        header("Location: ../view/login.php");
+        header("Location: ../index.php");
     } else {
         $_SESSION['msg'] = $resultado['mensagem'];
         $_SESSION['tipo_msg'] = 'erro';
