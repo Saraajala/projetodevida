@@ -3,10 +3,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Abel&display=swap');
 
 :root {
-    --cor-primaria: rgba(103, 22, 19, 1);
-    --cor-secundaria: rgba(47, 19, 23, 0.6);
-    --cor-terciaria: rgba(229, 223, 205, 1);
-    --cor-quaternaria: rgba(255, 255, 255, 1);
+    --cor-primaria: #671613;
+    --cor-secundaria: #2f131799;
+    --cor-terciaria: #e5dfcd;
+    --cor-quaternaria: #ffffff;
 }
 
 body {
@@ -14,16 +14,31 @@ body {
     background: var(--cor-primaria);
     color: var(--cor-quaternaria);
     text-align: center;
+    overflow: hidden; 
     height: 100vh;
-    overflow: hidden;
 }
 
-/* Alinhamento do cabeçalho */
+/* Fundo da página inicial */
+.fundodoinicio {
+    background: url("imagens/inicio.png") no-repeat center center;
+    background-size: 60%; /* menor para evitar rolagem */
+    background-position: top center;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; 
+    align-items: center;
+    padding-bottom: 150px; 
+}
+
+/* Cabeçalho centralizado */
 .header {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 20px;
+    padding: 20px 0;
+    background: var(--cor-primaria);
 }
 
 .header nav ul {
@@ -35,10 +50,10 @@ body {
 .header a {
     text-decoration: none;
     color: var(--cor-quaternaria);
-    font-weight: bold;
     padding: 8px 15px;
     border: 1px solid var(--cor-quaternaria);
     border-radius: 20px;
+    font-family: "Abel", sans-serif;
 }
 
 .header a:hover {
@@ -46,47 +61,19 @@ body {
     color: var(--cor-primaria);
 }
 
-/* Centralizando tudo */
-.container {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 60vh;
-}
-
-/* Posicionando o SVG acima da logo */
-.svg-container {
-    position: absolute;
-    top: 80px; /* Sobe um pouco a escrita */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 400px;
-}
-
-/* Ajuste da Logo */
-.logo {
-    width: 300px;
-    position: relative;
-    top: 50px; /* Mantém a logo no centro abaixo do texto */
-}
-
-/* Botão */
+/* Botão centralizado abaixo da imagem */
 .botao {
-    display: inline-block;
-    margin-top: 120px;
     background: transparent;
     border: 1px solid var(--cor-quaternaria);
     padding: 10px 20px;
     border-radius: 20px;
     color: var(--cor-quaternaria);
     font-size: 1rem;
-    font-family: "Abel", serif;
+    font-family: "Abel", sans-serif;
     text-decoration: none;
     text-align: center;
     cursor: pointer;
-    z-index: 10;
+    margin-top: 20px;
 }
 
 .botao:hover {
@@ -101,18 +88,159 @@ body {
     box-sizing: border-box;
 }
 
-/* Estilização do cabeçalho */
-.header {
+/* Só permite rolagem quando for a página sobre */
+body.sobre-site {
+    overflow-y: auto;
+    height: auto;
+}
+
+.header-sobre {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: space-between; /* Distribui os elementos */
-    padding: 10px 20px;
-    background: #671613; /* Cor do fundo (ajuste se necessário) */
+    padding: 15px 40px;
+    background: var(--cor-primaria);
+}
+
+.header-sobre .logo {
+    height: 80px;
+}
+
+.header-sobre .menu-central {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-sobre .menu-central li a {
+    text-decoration: none;
+    color: var(--cor-quaternaria);
+    padding: 10px 15px;
+    border: 1px solid var(--cor-quaternaria);
+    border-radius: 20px;
+    font-family: "Abel", sans-serif;
+    transition: background 0.3s;
+}
+
+.header-sobre .menu-central li a:hover {
+    background: var(--cor-terciaria);
+    color: var(--cor-primaria);
+}
+
+.header-sobre .voltar {
+    text-decoration: none;
+    color: var(--cor-quaternaria);
+    padding: 10px 15px;
+    border: 1px solid var(--cor-quaternaria);
+    border-radius: 20px;
+    font-family: "Abel", sans-serif;
+    transition: background 0.3s;
+}
+
+.header-sobre .voltar:hover {
+    background: var(--cor-terciaria);
+    color: var(--cor-primaria);
+}
+
+
+.conteudo-sobre {
+    padding: 30px;
+    background: var(--cor-primaria);
+    color: var(--cor-quaternaria);
+    text-align: center;
+    overflow-y: auto;
+    height: auto;
+}
+
+.titulo-sobre {
+    font-size: 60px;
+    margin: 30px 0;
+    font-family: "Newsreader", serif;
+}
+
+.secao-projeto {
+    margin-top: 20px;
+}
+
+.texto-imagem {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+    padding: 20px 40px;
+    text-align: left;
+}
+
+.texto-imagem .texto {
+    flex: 1;
+    max-width: 500px;
+    font-size: 18px;
+}
+
+.texto-imagem .texto h3 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.texto-imagem .texto p {
+    font-size: 20px;
+    font-family: "Abel", sans-serif;
+    margin-bottom: 15px;
+}
+.imagens_sobre {
+    display: flex;
+    gap: 20px;
+    flex: 1;
+    justify-content: flex-end;
+    align-items: flex-start;
+    position: relative;
+}
+
+.imagens_sobre img {
+    width: 40%;
+    height: 40%;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.imagens_sobre img:nth-child(2) {
+    margin-top: 50px; /* desce a segunda imagem pra criar o desnível */
+}
+
+.bloco-cadastro {
+    background-color: var(--cor-terciaria);
+    color: var(--cor-primaria);
+    padding: 30px;
+    margin: 40px auto;
+    width: fit-content;
+    border-radius: 15px;
+}
+
+.bloco-cadastro .botao {
+    margin-top: 15px;
+    border-color: var(--cor-primaria);
+    color: var(--cor-primaria);
+}
+
+.secao-senai {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.secao-senai .texto {
+    max-width: 700px;
+    font-size: 18px;
 }
 
 /* Logo alinhada à esquerda */
-.logo2 {
-    height: 80px; /* Ajuste conforme necessário */
+.logo {
+    height: 80px; 
 }
 
 /* Centralizando a navegação */
@@ -125,7 +253,6 @@ body {
 .menu-central a {
     text-decoration: none;
     color: white;
-    font-weight: bold;
     padding: 10px 15px;
     transition: background 0.3s;
 }
@@ -138,7 +265,6 @@ body {
 .voltar {
     text-decoration: none;
     color: white;
-    font-weight: bold;
     padding: 10px 15px;
     border-radius: 5px;
     transition: background 0.3s;
@@ -146,10 +272,4 @@ body {
 
 .voltar:hover {
     background: rgba(255, 255, 255, 0.2);
-}
-
-.escrita-sobre{
-    font-family: "Newsreader", serif;
-    color: var(--cor-quaternaria);
-    font-size: 80px;
 }
