@@ -14,22 +14,23 @@ body {
     background: var(--cor-primaria);
     color: var(--cor-quaternaria);
     text-align: center;
-    overflow: hidden; 
+    overflow: hidden;
     height: 100vh;
 }
 
 /* Fundo da página inicial */
 .fundodoinicio {
     background: url("imagens/inicio.png") no-repeat center center;
-    background-size: 60%; /* menor para evitar rolagem */
+    background-size: 60%;
+    /* menor para evitar rolagem */
     background-position: top center;
     height: 100vh;
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end; 
+    justify-content: flex-end;
     align-items: center;
-    padding-bottom: 150px; 
+    padding-bottom: 150px;
 }
 
 /* Cabeçalho centralizado */
@@ -92,6 +93,13 @@ body {
 body.sobre-site {
     overflow-y: auto;
     height: auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main .sobre-site {
+    flex: 1;
 }
 
 .header-sobre {
@@ -190,6 +198,7 @@ body.sobre-site {
     font-family: "Abel", sans-serif;
     margin-bottom: 15px;
 }
+
 .imagens_sobre {
     display: flex;
     gap: 20px;
@@ -207,16 +216,18 @@ body.sobre-site {
 }
 
 .imagens_sobre img:nth-child(2) {
-    margin-top: 50px; /* desce a segunda imagem pra criar o desnível */
+    margin-top: 50px;
+    /* desce a segunda imagem pra criar o desnível */
 }
 
 .bloco-cadastro {
     background-color: var(--cor-terciaria);
     color: var(--cor-primaria);
-    padding: 30px;
+    padding: 35px;
     margin: 40px auto;
-    width: fit-content;
-    border-radius: 15px;
+    width: 30%;
+    height: 30%;
+    border-radius: 5px;
 }
 
 .bloco-cadastro .botao {
@@ -225,29 +236,123 @@ body.sobre-site {
     color: var(--cor-primaria);
 }
 
-.secao-senai {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 25px;
-    margin-top: 30px;
+.escrita-bloco-cadastro {
+    color: var(--cor-primaria);
+    font-weight: 800;
 }
 
-.secao-senai .texto {
-    max-width: 700px;
-    font-size: 18px;
+.botao-cadastro {
+    display: inline-block;
+    background-color: var(--cor-secundaria);
+    color: var(--cor-terciaria);
+    padding: 10px 25px;
+    border: none;
+    border-radius: 3px;
+    font-family: "Newsreader", serif;
+    font-size: 0.9rem;
+    font-weight: 800;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.botao-cadastro:hover {
+    background-color: #382c2a;
+    /* cor mais escura no hover */
+}
+
+.bloco-senai-separado {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 30px;
+    gap: 100px;
+    z-index: 2;
+}
+
+.texto-central {
+    max-width: 800px;
+    background-color: var(--cor-terciaria);
+    color: var(--cor-primaria);
+    padding: 50px 50px;
+    border-radius: 8px;
+    font-family: "Abel", sans-serif;
+    text-align: center;
+    z-index: 2;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.texto-central h2 {
+    font-family: "Newsreader", serif;
+    font-size: 30px;
+    font-weight: 800;
+    margin-bottom: 5px;
+}
+
+.texto-central p {
+    font-size: 20px;
+    line-height: 1;
+}
+
+/* Bloco de fundo centralizado */
+.bloco-fundo-senai {
+    position: absolute;
+    top: 230%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--cor-secundaria);
+    width: 100%;
+    height: 30%;
+    z-index: 1;
+}
+
+/* Blocos das imagens nas laterais */
+.imagem-senai-bloco {
+    width: 200px;
+    height: auto;
+    z-index: 2;
+}
+
+.imagem-senai-bloco img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.imagem-senai-container {
+    background-color: var(--cor-terciaria);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 10px;
+    /* novo */
+}
+
+.imagem-senai-bloco img {
+    width: 200px;
+    height: auto;
+    border-radius: 5px;
+    object-fit: cover;
 }
 
 /* Logo alinhada à esquerda */
 .logo {
-    height: 80px; 
+    height: 80px;
 }
 
 /* Centralizando a navegação */
 .menu-central {
     display: flex;
     list-style: none;
-    gap: 20px; /* Espaço entre os itens */
+    gap: 20px;
+    /* Espaço entre os itens */
 }
 
 .menu-central a {
@@ -272,4 +377,104 @@ body.sobre-site {
 
 .voltar:hover {
     background: rgba(255, 255, 255, 0.2);
+}
+
+.rodape {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background-color: #420f0f;
+    padding: 40px 60px;
+    color: var(--cor-quaternaria);
+    font-family: "Newsreader", serif;
+    width: 100%;
+    position: absolute;
+    right: 0%;
+    left: 0%;
+}
+
+.coluna {
+    flex: 1;
+    margin: 20px;
+}
+
+.logo img {
+    max-width: 180px;
+    height: auto;
+}
+
+.mapa-site {
+    align-items: center;
+    text-align: left;
+}
+
+.mapa-site h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.mapa-site ul {
+    list-style: none;
+    padding: 0;
+}
+
+.mapa-site ul li {
+    margin: 8px 0;
+}
+
+.mapa-site ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.feedbacks h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.feedbacks form {
+    display: flex;
+    flex-direction: column;
+}
+
+.feedbacks label {
+    margin: 10px 0 5px;
+    font-size: 14px;
+}
+
+.feedbacks input,
+.feedbacks textarea {
+    padding: 10px;
+    background-color: #5e1c1c;
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-family: "Abel", sans-serif;
+}
+
+.feedbacks textarea {
+    resize: none;
+    height: 100px;
+}
+
+.feedbacks button {
+    font-family: "Newsreader", serif;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #fff;
+    color: #5e1c1c;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.direitos {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    font-size: 14px;
 }

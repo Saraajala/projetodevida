@@ -26,6 +26,8 @@
     <main class="conteudo-sobre">
         <h1 class="titulo-sobre">PROJETO DE VIDA</h1>
 
+        <br><br><br><br>
+
         <section class="secao-projeto">
             <div class="texto-imagem">
                 <div class="texto">
@@ -38,22 +40,95 @@
                 </div>
             </div>
 
+            <br><br><br><br>  <br><br><br><br>  <br><br><br><br>
+
             <div class="bloco-cadastro">
-                <h2>JÁ SE CADASTROU?</h2>
-                <a href="view/cadastro.php" class="botao">FAÇA AQUI SEU CADASTRO</a>
+                <h2 class="escrita-bloco-cadastro">JÁ SE CADASTROU?</h2> <br>
+                <a href="view/cadastro.php" class="botao-cadastro">FAÇA AQUI SEU CADASTRO</a>
             </div>
 
+            <br><br><br><br>  <br><br><br><br>  <br><br><br><br>
+
             <div class="secao-senai">
-                <div class="imagens">
-                    <img src="imagens/img4.png" alt="">
-                    <img src="imagens/img5.png" alt="">
-                </div>
-                <div class="texto">
-                    <h2>SOBRE O SENAI</h2>
-                    <p>O curso de Desenvolvimento de Sistemas do SENAI tem sido essencial para minha jornada na programação. Ele me proporcionou uma base sólida em lógica de programação, banco de dados e desenvolvimento web, além de reforçar a importância das boas práticas do setor e me capacitar com conhecimentos aplicáveis ao mundo do trabalho.</p>
+                <div class="bloco-fundo-senai"></div>
+
+                <div class="bloco-senai-separado">
+                    <!-- Imagem esquerda com bloco -->
+                    <div class="imagem-senai-container">
+                        <div class="imagem-senai-bloco">
+                            <img src="imagens/img_3_sobre.png" alt="Imagem esquerda">
+                        </div>
+                    </div>
+
+                    <!-- Texto central -->
+                    <div class="texto-central">
+                        <h2>SOBRE O SENAI</h2>
+                        <p>
+                            O curso de Desenvolvimento de Sistemas do SENAI tem sido essencial para minha jornada na programação.
+                            Ele me proporcionou uma base sólida em lógica de programação, banco de dados e desenvolvimento web,
+                            além de reforçar a importância das boas práticas e do trabalho em equipe.
+                            Com os conhecimentos adquiridos, posso aplicar conceitos na prática, desenvolver projetos reais e
+                            aprimorar minhas habilidades, o que me ajuda a ganhar confiança e preparar meu caminho para o mercado
+                            de trabalho.
+                        </p>
+                    </div>
+
+                    <!-- Imagem direita com bloco -->
+                    <div class="imagem-senai-container">
+                        <div class="imagem-senai-bloco">
+                            <img src="imagens/img_3_sobre.png" alt="Imagem direita">
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            </div>
         </section>
+
+        <br><br><br><br>  <br><br><br><br>  <br><br><br><br>
+
+        <footer class="rodape">
+           
+    <div class="coluna logo">
+        <img src="imagens/logo.png" alt="Logo Sara Ajala Arquitetura">
+    </div>
+
+    <div class="coluna mapa-site">
+        <h1>MAPA DO SITE</h1>
+        <ul>
+            <li><a href="sobre_profissao.php">✦ SOBRE A PROFISSÃO</a></li>
+            <li><a href="view/teste_personalidade.php">✦ TESTE DE PERSONALIDADE</a></li>
+            <li><a href="planejamento_futuro.php">✦ PLANEJAMENTO DO FUTURO</a></li>
+            <li><a href="view/perfil.php">✦ MEU PERFIL</a></li>
+            <li><a href="inicio.php">✦ SAIR</a></li>
+        </ul>
+    </div>
+
+    <div class="coluna feedbacks">
+        <h1>FEEDBACKS</h1>
+        <form action="index.php?action=salvarFeedback" method="POST">
+            <label for="email">E-MAIL:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="opiniao">ESCREVA AQUI SUA OPINIÃO:</label>
+            <textarea id="opiniao" name="opiniao" required></textarea>
+
+            <button type="submit">ENVIAR</button>
+        </form>
+
+        <?php
+        if (isset($_GET['msg']) && $_GET['msg'] == 'feedback_enviado') {
+            echo "<p>Feedback enviado com sucesso!</p>";
+        }
+        ?>
+    </div>
+
+    <div class="direitos">
+        <p>© TODOS OS DIREITOS RESERVADOS</p>
+    </div>
+
+</footer>
+
     </main>
 
 </body>
