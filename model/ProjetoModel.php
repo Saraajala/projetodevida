@@ -113,8 +113,32 @@ class ProjetoModel {
 
     // FEEDBACK
     public function inserirFeedback($email, $opiniao) {
-        $stmt = $this->pdo->prepare("INSERT INTO feedback (email, opiniao) VALUES (?, ?)");
+        $stmt = $this->pdo->prepare("INSERT INTO feedbacks (email, opiniao) VALUES (?, ?)");
         return $stmt->execute([$email, $opiniao]);
     }
+    
+    public function listarFeedbacks() {
+        $stmt = $this->pdo->query("SELECT email, opiniao FROM feedbacks ORDER BY id DESC");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function buscarFeedbacksPorUsuario($usuarioId) {
+        $stmt = $this->pdo->prepare("SELECT * FROM feedbacks WHERE usuario_id = ?");
+        $stmt->execute([$usuarioId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function buscarTodosFeedbacks() {
+        $stmt = $this->pdo->query("SELECT * FROM feedbacks");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function salvarFeedback($usuarioId, $email, $opiniao) {
+        $stmt = $this->pdo->prepare("INSERT INTO feedbacks (usuario_id, email, opiniao) VALUES (?, ?, ?)");
+        return $stmt->execute([$usuarioId, $email, $opiniao]);
+    }
+    
+
+
 }
 ?>

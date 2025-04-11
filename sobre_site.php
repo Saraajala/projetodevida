@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,14 +39,14 @@
                 </div>
             </div>
 
-            <br><br><br><br>  <br><br><br><br>  <br><br><br><br>
+            <br><br><br><br> <br><br><br><br> <br><br><br><br>
 
             <div class="bloco-cadastro">
                 <h2 class="escrita-bloco-cadastro">JÁ SE CADASTROU?</h2> <br>
                 <a href="view/cadastro.php" class="botao-cadastro">FAÇA AQUI SEU CADASTRO</a>
             </div>
 
-            <br><br><br><br>  <br><br><br><br>  <br><br><br><br>
+            <br><br><br><br> <br><br><br><br> <br><br><br><br>
 
             <div class="secao-senai">
                 <div class="bloco-fundo-senai"></div>
@@ -85,49 +84,49 @@
             </div>
         </section>
 
-        <br><br><br><br>  <br><br><br><br>  <br><br><br><br>
+        <br><br><br><br> <br><br><br><br> <br><br><br><br>
 
         <footer class="rodape">
-           
-    <div class="coluna logo">
-        <img src="imagens/logo.png" alt="Logo Sara Ajala Arquitetura">
-    </div>
 
-    <div class="coluna mapa-site">
-        <h1>MAPA DO SITE</h1>
-        <ul>
-            <li><a href="sobre_profissao.php">✦ SOBRE A PROFISSÃO</a></li>
-            <li><a href="view/teste_personalidade.php">✦ TESTE DE PERSONALIDADE</a></li>
-            <li><a href="planejamento_futuro.php">✦ PLANEJAMENTO DO FUTURO</a></li>
-            <li><a href="view/perfil.php">✦ MEU PERFIL</a></li>
-            <li><a href="inicio.php">✦ SAIR</a></li>
-        </ul>
-    </div>
+            <div class="coluna logo">
+                <img src="imagens/logo.png" alt="Logo Sara Ajala Arquitetura">
+            </div>
 
-    <div class="coluna feedbacks">
-        <h1>FEEDBACKS</h1>
-        <form action="index.php?action=salvarFeedback" method="POST">
-            <label for="email">E-MAIL:</label>
-            <input type="email" id="email" name="email" required>
+            <div class="coluna mapa-site">
+                <h1>MAPA DO SITE</h1>
+                <ul>
+                    <li><a href="sobre_profissao.php">✦ SOBRE A PROFISSÃO</a></li>
+                    <li><a href="view/teste_personalidade.php">✦ TESTE DE PERSONALIDADE</a></li>
+                    <li><a href="planejamento_futuro.php">✦ PLANEJAMENTO DO FUTURO</a></li>
+                    <li><a href="view/perfil.php">✦ MEU PERFIL</a></li>
+                    <li><a href="inicio.php">✦ SAIR</a></li>
+                </ul>
+            </div>
 
-            <label for="opiniao">ESCREVA AQUI SUA OPINIÃO:</label>
-            <textarea id="opiniao" name="opiniao" required></textarea>
+            <div class="coluna feedbacks">
+                <h1>FEEDBACKS</h1>
+                <form action="index.php?action=salvarFeedback" method="POST">
+    <label for="email">E-MAIL:</label>
+    <input type="email" id="email" name="email" required>
 
-            <button type="submit">ENVIAR</button>
-        </form>
+    <label for="opiniao">ESCREVA AQUI SUA OPINIÃO:</label>
+    <textarea id="opiniao" name="opiniao" required></textarea>
 
-        <?php
-        if (isset($_GET['msg']) && $_GET['msg'] == 'feedback_enviado') {
-            echo "<p>Feedback enviado com sucesso!</p>";
-        }
-        ?>
-    </div>
+    <button type="submit">ENVIAR</button>
+</form>
 
-    <div class="direitos">
-        <p>© TODOS OS DIREITOS RESERVADOS</p>
-    </div>
+                <?php
+                if (isset($_GET['msg']) && $_GET['msg'] == 'feedback_enviado') {
+                    echo "<p>Feedback enviado com sucesso!</p>";
+                }
+                ?>
+            </div>
 
-</footer>
+            <div class="direitos">
+                <p>© TODOS OS DIREITOS RESERVADOS</p>
+            </div>
+
+        </footer>
 
     </main>
 
