@@ -10,5 +10,6 @@
     <img src="../uploads/<?= htmlspecialchars($_SESSION['foto_perfil']) ?>" width="150">
     <a href="atualizar_perfil.php">Editar Perfil</a>
     <a href="../controller/ProjetoController.php?action=logout">Sair</a>
+    <a href="view/feedbacks.php">Ver feedbacks de outros usuários</a>
 </body>
 </html>

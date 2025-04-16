@@ -37,7 +37,6 @@
   </div>
 </main>
 
-
   <footer class="esqueci-footer">© TODOS OS DIREITOS RESERVADOS</footer>
 
 </body>

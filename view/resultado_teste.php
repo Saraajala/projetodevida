@@ -11,12 +11,22 @@ if (!isset($_SESSION['usuario_id'])) {
 $usuario_id = $_SESSION['usuario_id'];
 
 $controller = new ProjetoController($pdo);
-$resultados = $controller->buscarResultadosTeste($usuario_id);
+
+// Buscar o último resultado registrado
+$stmt = $pdo->prepare("SELECT * FROM resultados WHERE usuario_id = ? ORDER BY id DESC LIMIT 1");
+$stmt->execute([$usuario_id]);
+$resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$resultado) {
+    echo "Nenhum resultado encontrado.";
+    exit;
+}
 
 // Preparar dados para o gráfico (agrupando por tipo de resultado)
 $dadosGrafico = [];
-foreach ($resultados as $resultado) {
-    $tipo = $resultado['tipo_resultado'];
+$controllerResult = $controller->buscarResultadosTeste($usuario_id);
+foreach ($controllerResult as $res) {
+    $tipo = $res['tipo_resultado'];
     if (!isset($dadosGrafico[$tipo])) {
         $dadosGrafico[$tipo] = 0;
     }
@@ -61,5 +71,12 @@ foreach ($resultados as $resultado) {
 <body>
     <h1>Gráfico dos Resultados do Quiz</h1>
     <div id="grafico_resultado" style="width: 100%; height: 500px;"></div>
+
+    <h2>Interpretação</h2>
+    <p><strong>Tipo de Resultado:</strong> <?php echo htmlspecialchars($resultado['tipo_resultado']); ?></p>
+    <p><strong>Descrição:</strong> <?php echo htmlspecialchars($resultado['descricao']); ?></p>
+
+    <p><a href="teste_personalidade.php">Refazer Teste</a></p>
+<p><a href="perfil.php">Voltar ao Perfil</a></p>
 </body>
 </html>

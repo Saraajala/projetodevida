@@ -40,19 +40,19 @@ class ProjetoController
     public function login($email, $senha)
     {
         session_start(); // garante que a sessão esteja ativa
-    
+
         $usuario = $this->projetoModel->login($email);
-    
+
         if (!$usuario) {
             $_SESSION['msg'] = "erro usuario";
             return;
         }
-    
+
         if (!password_verify($senha, $usuario['senha'])) {
             $_SESSION['msg'] = "erro senha";
             return;
         }
-    
+
         // Salva ID do usuário e redireciona para index.php
         $_SESSION['usuario_id'] = $usuario['id'];
         $_SESSION['msg'] = "sucesso";
@@ -157,16 +157,16 @@ class ProjetoController
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
         }
-    
+
         if (!isset($_SESSION['usuario_id'])) {
             echo "Você precisa estar logado para enviar feedback.";
             return;
         }
-    
+
         $usuarioId = $_SESSION['usuario_id'];
         $email = $_POST['email'] ?? '';
         $opiniao = $_POST['opiniao'] ?? '';
-    
+
         if (!empty($email) && !empty($opiniao)) {
             // Corrigido aqui:
             $this->projetoModel->salvarFeedback($usuarioId, $email, $opiniao);
@@ -176,10 +176,44 @@ class ProjetoController
             echo "Preencha todos os campos.";
         }
     }
-    
+
     // TESTES
-    public function buscarResultadosTeste($usuario_id)
-    {
+
+    public function testePersonalidade() {
+        $perguntas = $this->projetoModel->buscarPerguntas();
+        $respostas = $this->projetoModel->buscarRespostas();
+    
+        // Verificar o conteúdo das variáveis
+        var_dump($perguntas); // Verifique se as perguntas estão sendo recuperadas corretamente
+        var_dump($respostas);  // Verifique se as respostas estão sendo recuperadas corretamente
+    
+        // Organiza as respostas por pergunta_id
+        $respostasPorPergunta = [];
+        foreach ($respostas as $resposta) {
+            $respostasPorPergunta[$resposta['pergunta_id']][] = $resposta;
+        }
+    
+        // Passa os dados para a view
+        include 'views/teste_personalidade.php';
+    }
+
+    public function buscarResultadosTeste($usuario_id) {
         return $this->projetoModel->buscarResultadosTeste($usuario_id);
+    }
+
+    public function salvarRespostasTeste($usuario_id, $respostas) {
+        return $this->projetoModel->salvarRespostasTeste($usuario_id, $respostas);
+    }
+
+    public function buscarPerguntasTeste() {
+        return $this->projetoModel->buscarPerguntas();
+    }
+
+    public function agruparResultadosPorTipo($usuario_id) {
+        return $this->projetoModel->agruparResultadosPorTipo($usuario_id);
+    }
+
+    public function buscarRespostas() {
+        return $this->projetoModel->buscarRespostas();
     }
 }
