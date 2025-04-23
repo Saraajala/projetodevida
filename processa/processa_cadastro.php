@@ -1,4 +1,9 @@
 <?php
+header("Location: ../index.php");
+exit;
+?>
+
+<?php
 session_start();
 require_once '../config.php';
 require_once '../controller/ProjetoController.php';
@@ -16,11 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($resultado['sucesso']) {
         $_SESSION['msg'] = $resultado['mensagem'];
         $_SESSION['tipo_msg'] = 'sucesso';
+        $_SESSION['usuario_id'] = $resultado['id']; 
         header("Location: ../index.php");
-    } else {
-        $_SESSION['msg'] = $resultado['mensagem'];
-        $_SESSION['tipo_msg'] = 'erro';
-        header("Location: ../view/cadastro.php");
     }
-    exit;
+    
 }

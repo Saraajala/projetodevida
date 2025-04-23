@@ -1,9 +1,24 @@
 <?php
+header("Location: inicio.php");  // Substitua 'inicio.php' pelo nome da sua página inicial
+exit();
+?>
+
+<?php
 session_start();
+
+// Verificar se o usuário está autenticado
+if (!isset($_SESSION['usuario_id'])) {
+    // Se não estiver, redirecionar para o login
+    header("Location: login.php");
+    exit();
+}
+?>
+
+<?php
 if (isset($_SESSION['usuario_id'])) {
     $_SESSION['usuario_id'];
 } else {
-    echo "Usuário NÃO está logado.";
+    echo "Usuário NÃO logado.";
 }
 ?>
 
@@ -36,7 +51,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'salvarFeedback') {
         <nav>
             <ul class="menu-central">
                 <li><a href="view/plano_acao.php">Plano de ação</a></li>
-                <li><a href="view/teste_personalidade.php">Teste de personalidade</a></li>
+                <li><a href="view/teste.php">Teste de personalidade</a></li>
                 <li><a href="view/planejamento_futuro.php">Planeamento do futuro</a></li>
             </ul>
         </nav>

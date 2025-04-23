@@ -10,7 +10,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $novaSenha = $_POST['nova_senha'] ?? '';
     $confirmarSenha = $_POST['confirmar_senha'] ?? '';
 
-  
+    if ($novaSenha !== $confirmarSenha) {
+        $_SESSION['msg'] = "As senhas não coincidem!";
+        header("Location: ../view/redefinir_senha.php");
+        exit;
+    }
 
     $resultado = $controller->redefinirSenhaDireta($email, $novaSenha);
 

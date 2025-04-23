@@ -104,9 +104,8 @@ class ProjetoModel
     }
 
     // Busca os resultados individuais do teste
-    public function buscarResultadosTeste($usuario_id)
-    {
-        $stmt = $this->pdo->prepare("SELECT * FROM resultados_teste WHERE usuario_id = ?");
+    public function buscarResultadosTeste($usuario_id) {
+        $stmt = $this->pdo->prepare("SELECT * FROM resultados WHERE usuario_id = ? ORDER BY id DESC");
         $stmt->execute([$usuario_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

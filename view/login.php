@@ -17,20 +17,12 @@
 
     <!-- Formulário de login -->
     <div class="cadastro-container cadastro-form-box">
-      <h1>Login</h1>
+      <h1>LOGIN</h1>
       <form action="../processa/processa_login.php" method="POST" class="cadastro-form">
         <input type="email" name="email" placeholder="E-MAIL:" required>
         <input type="password" name="senha" placeholder="SENHA:" required>
         <button type="submit">ENTRAR</button>
       </form>
-
-      <?php if (isset($_SESSION["msg"])): ?>
-        <p style="color: <?= $_SESSION["msg"] === "sucesso" ? 'green' : 'red'; ?>">
-          <?= $_SESSION["msg"] ?>
-        </p>
-        <?php unset($_SESSION["msg"]); ?>
-      <?php endif; ?>
-
       <a href="redefinir_senha.php" class="cadastro-link">Esqueceu sua senha?</a>
     </div>
   </div>

@@ -15,17 +15,17 @@
     <p class="esqueci-subtitulo">CADASTRE A NOVA SENHA:</p>
     
     <form action="../processa/processa_redefinicao.php" method="POST" class="esqueci-form">
-      <label for="nova_senha" class="esqueci-label"></label>
-      <input type="password" name="nova_senha" required placeholder="Digite sua nova senha" class="esqueci-input">
-      <button type="submit" class="esqueci-botao">SALVAR</button>
-    </form>
+  <label for="email" class="esqueci-label"></label>
+  <input type="email" name="email" required placeholder="Digite seu e-mail" class="esqueci-input">
 
-    <?php if (isset($_SESSION["msg"])): ?>
-      <p class="esqueci-msg" style="color: <?= $_SESSION["tipo_msg"] === "sucesso" ? 'green' : 'red' ?>;">
-        <?= $_SESSION["msg"] ?>
-      </p>
-      <?php unset($_SESSION["msg"], $_SESSION["tipo_msg"]); ?>
-    <?php endif; ?>
+  <label for="nova_senha" class="esqueci-label"></label>
+  <input type="password" name="nova_senha" required placeholder="Digite sua nova senha" class="esqueci-input">
+
+  <label for="confirmar_senha" class="esqueci-label"></label>
+  <input type="password" name="confirmar_senha" required placeholder="Confirme sua nova senha" class="esqueci-input">
+
+  <button type="submit" class="esqueci-botao">SALVAR</button>
+</form>
   </div>
 
   <!-- Galeria à direita -->
