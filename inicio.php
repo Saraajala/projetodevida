@@ -1,4 +1,14 @@
-<!DOCTYPE html> 
+<?php
+session_start();
+// Verifica se o usuário já está logado
+if (isset($_SESSION['usuario_id'])) {
+    // Redireciona para a página inicial (index.php) caso esteja logado
+    header("Location: index.php");
+    exit();
+}
+?>
+
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">

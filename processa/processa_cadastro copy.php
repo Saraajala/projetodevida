@@ -25,6 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['usuario_id'] = $resultado['id']; // Define o ID do usuário
 
         // Redireciona para a página inicial (index.php) após o cadastro
+        var_dump('estou aqui');
+        die();
         header("Location: ../../index.php");
         exit();
     } else {
@@ -33,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['tipo_msg'] = 'erro';
 
         // Redireciona de volta para a página de cadastro (opcional, descomente se necessário)
-        header("Location: ../index.php");
-        exit();
+        // header("Location: ../index.php");
+        // exit();
     }
 }
 ?>

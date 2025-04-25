@@ -13,23 +13,26 @@ class ProjetoController
     // USUÁRIO
     public function cadastrar($nome, $email, $senha, $data_nascimento)
     {
+        // Verificar se o email já está cadastrado
         $usuarioExistente = $this->projetoModel->buscarUsuarioPorEmail($email);
-
+    
         if ($usuarioExistente) {
+            // Se o email já existe, retornar a mensagem de erro
             return [
                 'sucesso' => false,
                 'mensagem' => 'Este e-mail já está cadastrado.'
             ];
         }
-
+    
+        // Tentar cadastrar o novo usuário
         $resultado = $this->projetoModel->cadastrar($nome, $email, $senha, $data_nascimento);
-
+    
         if ($resultado) {
-            return [
-                'sucesso' => true,
-                'mensagem' => 'Usuário cadastrado com sucesso!'
-            ];
+            // Redirecionar para o index.php após sucesso
+            header("Location: /projetodevida/index.php?msg=sucesso_cadastro");
+            exit; // Importante para garantir que o código pare de executar aqui
         } else {
+            // Retornar erro caso o cadastro falhe
             return [
                 'sucesso' => false,
                 'mensagem' => 'Erro ao cadastrar usuário.'

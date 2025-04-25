@@ -1,27 +1,18 @@
 <?php
-header("Location: inicio.php");  // Substitua 'inicio.php' pelo nome da sua página inicial
-exit();
-?>
-
-<?php
 session_start();
+//session_destroy(); // Destrói a sessão
 
-// Verificar se o usuário está autenticado
-if (!isset($_SESSION['usuario_id'])) {
-    // Se não estiver, redirecionar para o login
-    header("Location: login.php");
-    exit();
-}
 ?>
 
 <?php
+
 if (isset($_SESSION['usuario_id'])) {
-    $_SESSION['usuario_id'];
+    // Usuário logado, você pode utilizar o $_SESSION['usuario_id'] para identificar
+    echo "Usuário logado: " . $_SESSION['usuario_id'];
 } else {
     echo "Usuário NÃO logado.";
 }
 ?>
-
 
 <?php
 if (isset($_GET['action']) && $_GET['action'] == 'salvarFeedback') {
@@ -51,16 +42,16 @@ if (isset($_GET['action']) && $_GET['action'] == 'salvarFeedback') {
         <nav>
             <ul class="menu-central">
                 <li><a href="view/plano_acao.php">Plano de ação</a></li>
-                <li><a href="view/teste.php">Teste de personalidade</a></li>
+                <li><a href="view/teste_personalidade.php">Teste de personalidade</a></li>
                 <li><a href="view/planejamento_futuro.php">Planeamento do futuro</a></li>
             </ul>
         </nav>
 
         <div class="perfil-wrapper">
-            <a href="view/perfil.php" class="icone-perfil-link">
+            <a href="./view/perfil.php" class="icone-perfil-link">
                 <img src="imagens/usuario.png" alt="Perfil" class="icone-perfil">
             </a>
-            <a href="inicio.php" class="sair">Sair</a>
+            <a href="logout.php" class="sair">Sair</a>
         </div>
     </header>
 
@@ -123,47 +114,47 @@ if (isset($_GET['action']) && $_GET['action'] == 'salvarFeedback') {
     </main>
 
     <section class="arquitetos">
-  <h2>ARQUITETOS FAMOSOS DO BRASIL</h2>
-  <div class="cards-arquitetos">
-    
-    <div class="card">
-      <img src="imagens/oscar.png" alt="Oscar Niemeyer">
-      <p><strong>Oscar Niemeyer</strong> <br> Principal nome da arquitetura moderna do Brasil, conhecido pelo uso de curvas e concreto armado.</p>
-    </div>
+        <h2>ARQUITETOS FAMOSOS DO BRASIL</h2>
+        <div class="cards-arquitetos">
 
-    <div class="card">
-      <img src="imagens/paulo.png" alt="Paulo Mendes da Rocha">
-      <p><strong>Paulo Mendes da Rocha</strong> <br> Vencedor do Prêmio Pritzker, projetou o SESC 24 de Maio e a Pinacoteca de São Paulo, com forte influência brutalista.</p>
-    </div>
+            <div class="card">
+                <img src="imagens/oscar.png" alt="Oscar Niemeyer">
+                <p><strong>Oscar Niemeyer</strong> <br> Principal nome da arquitetura moderna do Brasil, conhecido pelo uso de curvas e concreto armado.</p>
+            </div>
 
-    <div class="card">
-      <img src="imagens/marcio.jpg" alt="Marcio Kogan">
-      <p><strong>Marcio Kogan</strong> <br> Arquiteto contemporâneo conhecido por suas casas minimalistas e integração entre arquitetura e paisagem.</p>
-    </div>
+            <div class="card">
+                <img src="imagens/paulo.png" alt="Paulo Mendes da Rocha">
+                <p><strong>Paulo Mendes da Rocha</strong> <br> Vencedor do Prêmio Pritzker, projetou o SESC 24 de Maio e a Pinacoteca de São Paulo, com forte influência brutalista.</p>
+            </div>
 
-    <div class="card">
-      <img src="imagens/rosa.jpg" alt="Rosa Kliass">
-      <p><strong>Rosa Kliass</strong> <br> Paisagista responsável pela renovação do Vale do Anhangabaú, em São Paulo, e outros projetos urbanísticos importantes.</p>
-    </div>
-  </div>
-</section>
+            <div class="card">
+                <img src="imagens/marcio.jpg" alt="Marcio Kogan">
+                <p><strong>Marcio Kogan</strong> <br> Arquiteto contemporâneo conhecido por suas casas minimalistas e integração entre arquitetura e paisagem.</p>
+            </div>
 
-<section class="aula-arquitetura">
-  <h2>AULA SOBRE ARQUITETURA MODERNA</h2>
-  <div class="video-container">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/kUiiEee2Jhk" 
-    title="Aula sobre arquitetura moderna" frameborder="0" 
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-    allowfullscreen></iframe>
-  </div>
-</section>
+            <div class="card">
+                <img src="imagens/rosa.jpg" alt="Rosa Kliass">
+                <p><strong>Rosa Kliass</strong> <br> Paisagista responsável pela renovação do Vale do Anhangabaú, em São Paulo, e outros projetos urbanísticos importantes.</p>
+            </div>
+        </div>
+    </section>
 
-<section class="secao-teste">
-  <div class="conteudo-teste">
-    <h2>TESTE DE PERSONALIDADE</h2>
-    <a href="view/teste_personalidade.php" class="botao-teste">CLIQUE AQUI PARA INICIAR O TESTE</a>
-  </div>
-</section>
+    <section class="aula-arquitetura">
+        <h2>AULA SOBRE ARQUITETURA MODERNA</h2>
+        <div class="video-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/kUiiEee2Jhk"
+                title="Aula sobre arquitetura moderna" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+        </div>
+    </section>
+
+    <section class="secao-teste">
+        <div class="conteudo-teste">
+            <h2>TESTE DE PERSONALIDADE</h2>
+            <a href="view/teste_personalidade.php" class="botao-teste">CLIQUE AQUI PARA INICIAR O TESTE</a>
+        </div>
+    </section>
 
     <footer class="rodape-index">
 

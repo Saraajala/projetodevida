@@ -24,22 +24,52 @@ foreach ($dados as $linha) {
 <head>
     <meta charset="UTF-8">
     <title>Teste de Personalidade</title>
+    <link rel="stylesheet" href="../estilo_teste.css"> <!-- CSS específico -->
 </head>
 <body>
-    <h1>Teste de Personalidade - Arquitetura</h1>
-    <form method="POST" action="../processa/processar_teste.php">
+
+<div class="container">
+    <form id="form-teste" method="POST" action="../processa/processar_teste.php">
+        <?php $contador = 0; ?>
         <?php foreach ($perguntas as $idPergunta => $pergunta): ?>
-            <fieldset>
+            <fieldset class="pergunta" style="<?= $contador > 0 ? 'display:none;' : '' ?>">
                 <legend><strong><?= $pergunta['texto'] ?></strong></legend>
                 <?php foreach ($pergunta['respostas'] as $resposta): ?>
-                    <label>
+                    <label class="opcao">
                         <input type="radio" name="respostas[<?= $idPergunta ?>]" value="<?= $resposta['id'] ?>" required>
                         <?= $resposta['texto'] ?>
                     </label><br>
                 <?php endforeach; ?>
             </fieldset>
+            <?php $contador++; ?>
         <?php endforeach; ?>
-        <input type="submit" value="Enviar Respostas">
+
+        <div id="navegacao">
+            <button type="button" id="btn-proximo">Próxima Pergunta</button>
+            <input type="submit" id="btn-enviar" value="Enviar Respostas" style="display:none;">
+        </div>
     </form>
+</div>
+
+<script>
+let perguntas = document.querySelectorAll('.pergunta');
+let btnProximo = document.getElementById('btn-proximo');
+let btnEnviar = document.getElementById('btn-enviar');
+let indice = 0;
+
+btnProximo.addEventListener('click', function() {
+    if (indice < perguntas.length - 1) {
+        perguntas[indice].style.display = 'none';
+        indice++;
+        perguntas[indice].style.display = 'block';
+
+        if (indice === perguntas.length - 1) {
+            btnProximo.style.display = 'none';
+            btnEnviar.style.display = 'inline-block';
+        }
+    }
+});
+</script>
+
 </body>
 </html>
