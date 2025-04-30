@@ -26,11 +26,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'salvarFeedback') {
 
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="css/estilo.css">
     <title>Início</title>
 </head>
 
@@ -48,11 +47,11 @@ if (isset($_GET['action']) && $_GET['action'] == 'salvarFeedback') {
         </nav>
 
         <div class="perfil-wrapper">
-            <a href="./view/perfil.php" class="icone-perfil-link">
-                <img src="imagens/usuario.png" alt="Perfil" class="icone-perfil">
-            </a>
-            <a href="logout.php" class="sair">Sair</a>
-        </div>
+        <a href="../view/perfil.php" class="icone-perfil-link">
+        <img src="imagens/usuario.png" alt="Perfil" class="icone-perfil">
+    </a>
+    <a href="logout.php" class="sair">Sair</a>
+</div>
     </header>
 
     <main class="index_main">
@@ -103,13 +102,13 @@ if (isset($_GET['action']) && $_GET['action'] == 'salvarFeedback') {
                     </div>
                 </div>
 
-                <!-- Botões do carrossel -->
-                <div class="botoes">
-                    <button onclick="mudarSlide(0)"></button>
-                    <button onclick="mudarSlide(1)"></button>
-                    <button onclick="mudarSlide(2)"></button>
-                </div>
-            </div>
+       <!-- Indicadores (pontinhos) -->
+    <div class="indicadores">
+        <label for="slide1" class="indicador"></label>
+        <label for="slide2" class="indicador"></label>
+        <label for="slide3" class="indicador"></label>
+    </div>
+</div>
         </section>
     </main>
 
@@ -163,16 +162,18 @@ if (isset($_GET['action']) && $_GET['action'] == 'salvarFeedback') {
         </div>
 
         <div class="coluna mapa-site">
-            <h1>MAPA DO SITE</h1>
-            <ul>
-                <li><a href="sobre_profissao.php">✦ SOBRE A PROFISSÃO</a></li>
-                <li><a href="view/teste_personalidade.php">✦ TESTE DE PERSONALIDADE</a></li>
-                <li><a href="planejamento_futuro.php">✦ PLANEJAMENTO DO FUTURO</a></li>
-                <li><a href="view/perfil.php">✦ MEU PERFIL</a></li>
-                <li><a href="sobre_site.php">✦ SOBRE O SITE</a></li>
-                <li><a href="inicio.php">✦ SAIR</a></li>
-            </ul>
-        </div>
+    <div>
+        <h1>MAPA DO SITE</h1>
+        <ul>
+            <li><a href="sobre_profissao.php">✦ SOBRE A PROFISSÃO</a></li>
+            <li><a href="view/teste_personalidade.php">✦ TESTE DE PERSONALIDADE</a></li>
+            <li><a href="planejamento_futuro.php">✦ PLANEJAMENTO DO FUTURO</a></li>
+            <li><a href="view/perfil.php">✦ MEU PERFIL</a></li>
+            <li><a href="sobre_site.php">✦ SOBRE O SITE</a></li>
+            <li><a href="inicio.php">✦ SAIR</a></li>
+        </ul>
+    </div>
+</div>
 
         <div class="coluna feedbacks-index">
             <h1>FEEDBACKS</h1>

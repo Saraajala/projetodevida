@@ -1,0 +1,144 @@
+/* Importando fontes */
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Abel&display=swap');
+
+:root {
+    --cor-primaria: #671613;
+    --cor-secundaria: #2f131799;
+    --cor-terciaria: #e5dfcd;
+    --cor-quaternaria: #ffffff;
+}
+
+/*ESQUECI A SENHA*/
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Impede qualquer rolagem */
+    height: 100%;
+    width: 100%;
+}
+
+.pagina-esqueci-senha {
+    height: 100vh;
+    overflow: hidden;
+}
+
+.pagina-esqueci-senha {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)),
+        url('../imagens/fundo-cadastro.png') no-repeat center center;
+    background-size: cover;
+}
+
+.esqueci-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
+    padding: 60px 40px;
+}
+
+/* Galeria alinhada à esquerda */
+.esqueci-galeria {
+    display: grid;
+    grid-template-rows: 200px 200px 180px;
+    grid-template-areas:
+        "grande media"
+        "grande pequena"
+        "media-grande media-grande";
+    gap: 20px;
+    padding-left: 20px;
+    align-self: flex-start;
+}
+
+/* Imagens da galeria */
+.img-grande {
+    grid-area: grande;
+    width: 300px;
+    height: 420px;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.img-media {
+    grid-area: media;
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.img-pequena {
+    grid-area: pequena;
+    width: 300px;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.img-media-grande {
+    grid-area: media-grande;
+    width: 300px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+/* Formulário */
+.esqueci-form-box {
+    background-color: #671613b1;
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 25px;
+    max-width: 400px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+.esqueci-titulo {
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+.esqueci-subtitulo {
+    font-weight: bold;
+    margin-bottom: 15px;
+   text-align: center;
+}
+
+.esqueci-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.esqueci-input {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    border: none;
+}
+
+.esqueci-botao {
+    background-color: #671613;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.esqueci-footer {
+    background-color: #3e1f1f;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 10px 0;
+    font-size: 12px;
+}

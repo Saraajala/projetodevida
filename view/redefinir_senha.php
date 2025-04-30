@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Redefinir Senha</title>
-  <link rel="stylesheet" href="../estilo.css">
+  <link rel="stylesheet" href="../css/estilo_esqueci.css">
 </head>
 <body class="pagina-esqueci-senha">
 

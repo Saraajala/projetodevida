@@ -24,9 +24,22 @@ foreach ($dados as $linha) {
 <head>
     <meta charset="UTF-8">
     <title>Teste de Personalidade</title>
-    <link rel="stylesheet" href="../estilo_teste.css"> <!-- CSS específico -->
+    <link rel="stylesheet" href="../css/estilo_teste.css"> <!-- CSS específico -->
 </head>
 <body>
+
+<header class="topo">
+    <div class="logo">
+        <img src="../imagens/logo.png" alt="Logo" class="logo-img">
+    </div>
+    <nav class="menu-direito">
+        <a href="../index.php">Início</a>
+        <a href="../perfil.php" title="Perfil">
+            <img src="../imagens/usuario.png" alt="Perfil" class="icone-perfil">
+        </a>
+        <a href="../logout.php">Sair</a>
+    </nav>
+</header>
 
 <div class="container">
     <form id="form-teste" method="POST" action="../processa/processar_teste.php">

@@ -1,0 +1,91 @@
+/* Importando fontes */
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Abel&display=swap');
+
+:root {
+    --cor-primaria: #671613;
+    --cor-secundaria: #2f131799;
+    --cor-terciaria: #e5dfcd;
+    --cor-quaternaria: #ffffff;
+}
+
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Newsreader", serif;
+    background: var(--cor-primaria);
+    color: var(--cor-quaternaria);
+    text-align: center;
+    overflow: hidden;
+    height: 100vh;
+}
+
+/* Fundo da página inicial */
+.fundodoinicio {
+    background: url("../imagens/inicio.png") no-repeat center center;
+    background-size: 60%;
+    /* menor para evitar rolagem */
+    background-position: top center;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding-bottom: 150px;
+}
+
+
+/* Cabeçalho centralizado */
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    background: var(--cor-primaria);
+}
+
+.header nav ul {
+    display: flex;
+    gap: 15px;
+    list-style: none;
+}
+
+.header a {
+    text-decoration: none;
+    color: var(--cor-quaternaria);
+    padding: 8px 15px;
+    border: 1px solid var(--cor-quaternaria);
+    border-radius: 20px;
+    font-family: "Abel", sans-serif;
+}
+
+.header a:hover {
+    background-color: var(--cor-terciaria);
+    color: var(--cor-primaria);
+}
+
+/* Botão centralizado abaixo da imagem */
+.botao {
+    background: transparent;
+    border: 1px solid var(--cor-quaternaria);
+    padding: 10px 20px;
+    border-radius: 20px;
+    color: var(--cor-quaternaria);
+    font-size: 1rem;
+    font-family: "Abel", sans-serif;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.botao:hover {
+    background: var(--cor-terciaria);
+    color: var(--cor-primaria);
+}

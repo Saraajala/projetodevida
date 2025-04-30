@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../estilo.css">
+    <link rel="stylesheet" href="../css/estilo_inicio_teste.css">
     <title>Teste de personalidade</title>
 </head>
 <body class="inicio-teste">
@@ -12,7 +12,7 @@
     </div>
 
     <div class="container">
-        <header class="inicio-teste">
+    <header class="header-inicio">
             <img src="../imagens/logo.png" alt="logo" class="logo">
 
             <nav>
