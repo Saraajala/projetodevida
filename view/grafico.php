@@ -40,6 +40,7 @@ if (isset($resultados[0])) {
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/estilo_resultado.css">
     <title>Gráfico de Resultados</title>
     <script src="https://www.gstatic.com/charts/loader.js"></script>
     <script>

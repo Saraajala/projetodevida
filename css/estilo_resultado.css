@@ -1,0 +1,79 @@
+/* Importando fontes */
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Abel&display=swap');
+
+:root {
+    --cor-primaria: #671613;
+    --cor-secundaria: #2f131799;
+    --cor-terciaria: #e5dfcd;
+    --cor-quaternaria: #ffffff;
+}
+
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--cor-primaria);
+    font-family: 'Abel', sans-serif;
+    color: var(--cor-secundaria);
+    padding: 20px;
+}
+
+/* Título */
+h1 {
+    text-align: center;
+    color: var(--cor-titulo);
+    font-family: 'Newsreader', serif;
+    margin-bottom: 30px;
+}
+
+/* Gráfico */
+#chart_div {
+    max-width: 800px;
+    margin: 0 auto 40px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Interpretação */
+h2 {
+    font-family: 'Newsreader', serif;
+    color: var(--cor-primaria);
+    margin-bottom: 10px;
+}
+
+p {
+    max-width: 800px;
+    margin: 0 auto 30px auto;
+    line-height: 1.6;
+    font-size: 1.1rem;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+/* Botão novo teste */
+form button {
+    display: block;
+    margin: 0 auto;
+    background-color: var(--cor-botao);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: var(--cor-botao-hover);
+}

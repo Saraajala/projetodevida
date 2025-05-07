@@ -79,9 +79,15 @@ body.inicio-teste {
 }
 
 .icone-perfil {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
+    object-fit: cover;
+    transition: transform 0.2s ease;
+}
+
+.icone-perfil:hover {
+    transform: scale(1.1);
 }
 
 .sair {

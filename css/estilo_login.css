@@ -21,7 +21,7 @@ body.pagina-login {
     flex-direction: column;
     height: 100vh;             /* Altura total da tela */
     margin: 0;
-    overflow: hidden;          /* Impede rolagem */
+    overflow: hidden;         
 }
 
 main {

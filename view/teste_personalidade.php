@@ -1,3 +1,14 @@
+<?php
+session_start();
+
+// Verificar se existe um parâmetro de erro na URL
+if (isset($_GET['erro']) && $_GET['erro'] == 1) {
+    $_SESSION['erro_mensagem'] = "Teste não concluído, inicie novamente!";
+    header('Location: /view/teste_personalidade.php'); // Redireciona de volta para a página
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>

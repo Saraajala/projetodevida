@@ -29,7 +29,6 @@ main.index_main {
     height: 32px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid white;
     transition: transform 0.2s ease;
 }
 
@@ -138,6 +137,7 @@ main.index_main {
 }
 
 .rodape-index {
+    margin: 0;
     display: flex;
     flex-wrap: wrap; /* Isso ajuda a garantir que o conteúdo não ultrapasse os limites */
     justify-content: space-between;
