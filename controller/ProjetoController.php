@@ -91,61 +91,127 @@ class ProjetoController
             }
         }
     }
-
+    
     public function atualizarPerfil()
     {
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            // Recupera os dados enviados
             $usuarioId = $_SESSION['usuario_id'];
-            $email = $_POST['email'] ?? '';
-            $dataNascimento = $_POST['data_nascimento'] ?? '';
-            $sobreMim = $_POST['sobre_mim'] ?? '';
-            $senha = $_POST['senha'] ?? '';
-            $fotoPerfil = null;
-
-            if (!empty($_FILES['fotoPerfil']['name']) && $_FILES['fotoPerfil']['error'] === UPLOAD_ERR_OK) {
-                $ext = pathinfo($_FILES['fotoPerfil']['name'], PATHINFO_EXTENSION);
-                $nomeArquivo = uniqid() . '.' . $ext;
-                $caminho = 'assets/img/perfis/' . $nomeArquivo;
-
-                if (move_uploaded_file($_FILES['fotoPerfil']['tmp_name'], $caminho)) {
-                    $fotoPerfil = $nomeArquivo;
+            $email = $_POST['email'];
+            $dataNascimento = $_POST['data_nascimento'];
+            $sobreMim = $_POST['sobre_mim'];
+            $senha = $_POST['senha'];
+    
+            // Trata o upload da imagem
+            $nomeArquivoFinal = null;
+            if (isset($_FILES['fotoPerfil']) && $_FILES['fotoPerfil']['error'] === UPLOAD_ERR_OK) {
+                // Obtemos a extensão do arquivo
+                $extensao = pathinfo($_FILES['fotoPerfil']['name'], PATHINFO_EXTENSION);
+                // Geramos um nome único para o arquivo
+                $nomeArquivoFinal = uniqid('perfil_', true) . '.' . $extensao;
+                // Caminho de destino para a pasta "imagens"
+                $caminhoDestino = "../imagens/" . $nomeArquivoFinal;
+    
+                // Verifica se a pasta existe, caso contrário cria
+                if (!file_exists('../imagens')) {
+                    mkdir('../imagens', 0777, true);
+                }
+    
+                // Move o arquivo para o destino
+                if (move_uploaded_file($_FILES['fotoPerfil']['tmp_name'], $caminhoDestino)) {
+                    // Sucesso no upload
+                } else {
+                    echo "Erro ao mover a imagem.";
+                    $nomeArquivoFinal = null; // Se houve erro, não define o arquivo
                 }
             }
-
-            $this->projetoModel->atualizarPerfil($usuarioId, $email, $senha, $dataNascimento, $fotoPerfil, $sobreMim);
-            header("Location: /usuario/perfil");
+    
+            // Se a senha não foi preenchida, ela não será alterada
+            if (empty($senha)) {
+                $senha = null;
+            }
+    
+            // Chama o Model para atualizar os dados no banco
+            $this->projetoModel->atualizarPerfil($usuarioId, $email, $senha, $dataNascimento, $sobreMim, $nomeArquivoFinal);
+    
+            // Atualiza sessão com os novos dados
+            $_SESSION['email'] = $email;
+            $_SESSION['data_nascimento'] = $dataNascimento;
+            $_SESSION['sobre_mim'] = $sobreMim;
+            if ($nomeArquivoFinal) {
+                $_SESSION['foto_perfil'] = $nomeArquivoFinal;
+            }
+    
+            // Redireciona para a página de perfil
+            header("Location: ../view/perfil.php");
+            exit;
         }
     }
 
-    // PROFISSÕES
-    public function buscarProfissoes($termo)
+    public function perfil()
     {
-        return $this->projetoModel->buscarProfissoes($termo);
+        if (!isset($_SESSION['usuario_id'])) {
+            header("Location: ../view/login.php");
+            exit;
+        }
+
+        $usuarioId = $_SESSION['usuario_id'];
+        $dados = $this->projetoModel->buscarUsuarioPorId($usuarioId);
+
+        if ($dados) {
+            // Atualiza os dados da sessão com as informações atuais do banco
+            $_SESSION['email'] = $dados['email'];
+            $_SESSION['data_nascimento'] = $dados['data_nascimento'];
+            $_SESSION['foto_perfil'] = $dados['foto_perfil'] ?? 'padrao.png';
+            $_SESSION['sobre_mim'] = $dados['sobre_mim'] ?? '';
+        }
+
+        include '../view/perfil.php';
     }
 
-    // PLANO DE AÇÃO
+
+ // PROFISSÕES
+ public function buscarProfissoes($termo) {
+    return $this->model->buscarProfissoes($termo);
+}
+
+
     public function adicionarPlanoAcao($area, $passo1, $passo2, $passo3, $como_irei_fazer, $prazo)
     {
         if (!isset($_SESSION["usuario_id"])) {
             echo "Usuário não autenticado!";
             return;
         }
+    
         $usuario_id = $_SESSION["usuario_id"];
         $res = $this->projetoModel->adicionarPlanoAcao($usuario_id, $area, $passo1, $passo2, $passo3, $como_irei_fazer, $prazo);
-        echo $res ? "Plano de ação adicionado com sucesso!" : "Erro ao adicionar plano!";
+    
+        if ($res) {
+            header("Location: plano_acao.php?msg=sucesso");
+        } else {
+            header("Location: plano_acao.php?msg=erro");
+        }
+        exit();
     }
-
+    
     public function atualizarPlanoAcao($id, $area, $passo1, $passo2, $passo3, $como_irei_fazer, $prazo)
     {
         if (!isset($_SESSION["usuario_id"])) {
             echo "Usuário não autenticado!";
             return;
         }
+    
         $usuario_id = $_SESSION["usuario_id"];
         $res = $this->projetoModel->atualizarPlanoAcao($id, $usuario_id, $area, $passo1, $passo2, $passo3, $como_irei_fazer, $prazo);
-        echo $res ? "Plano de ação atualizado com sucesso!" : "Erro ao atualizar plano!";
+    
+        if ($res) {
+            header("Location: plano_acao.php?msg=atualizado");
+        } else {
+            header("Location: plano_acao.php?msg=erro_atualizar");
+        }
+        exit();
     }
-
+    
     public function exibirPlanoAcao()
     {
         if (!isset($_SESSION["usuario_id"])) {
@@ -153,6 +219,12 @@ class ProjetoController
         }
         return $this->projetoModel->buscarPlanoAcao($_SESSION["usuario_id"]);
     }
+
+    public function deletarPlanoAcao($id) {
+        return $this->projetoModel->deletarPlanoAcao($id);
+        return $model->deletarPlanoAcao($id);
+    }    
+    
 
     // FEEDBACK
     public function salvarFeedback()
@@ -181,8 +253,8 @@ class ProjetoController
     }
 
     // TESTES
-
-    public function testePersonalidade() {
+    public function testePersonalidade()
+    {
         $perguntas = $this->projetoModel->buscarPerguntas();
         $respostas = $this->projetoModel->buscarRespostas();
     
@@ -200,23 +272,28 @@ class ProjetoController
         include 'views/teste_personalidade.php';
     }
 
-    public function buscarResultadosTeste($usuario_id) {
+    public function buscarResultadosTeste($usuario_id)
+    {
         return $this->projetoModel->buscarResultadosTeste($usuario_id);
     }
 
-    public function salvarRespostasTeste($usuario_id, $respostas) {
+    public function salvarRespostasTeste($usuario_id, $respostas)
+    {
         return $this->projetoModel->salvarRespostasTeste($usuario_id, $respostas);
     }
 
-    public function buscarPerguntasTeste() {
+    public function buscarPerguntasTeste()
+    {
         return $this->projetoModel->buscarPerguntas();
     }
 
-    public function agruparResultadosPorTipo($usuario_id) {
+    public function agruparResultadosPorTipo($usuario_id)
+    {
         return $this->projetoModel->agruparResultadosPorTipo($usuario_id);
     }
 
-    public function buscarRespostas() {
+    public function buscarRespostas()
+    {
         return $this->projetoModel->buscarRespostas();
     }
 }

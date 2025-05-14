@@ -47,7 +47,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'salvarFeedback') {
         </nav>
 
         <div class="perfil-wrapper">
-        <a href="../view/perfil.php" class="icone-perfil-link">
+        <a href="view/perfil.php" class="icone-perfil-link">
         <img src="imagens/usuario.png" alt="Perfil" class="icone-perfil">
     </a>
     <a href="logout.php" class="sair">Sair</a>

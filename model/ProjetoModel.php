@@ -1,4 +1,6 @@
 <?php
+include_once '../config.php'; // Se for o caso
+
 
 class ProjetoModel
 {
@@ -55,13 +57,48 @@ class ProjetoModel
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function atualizarPerfil($usuario_id, $email, $senha, $data_nascimento, $foto_perfil, $sobre_mim)
-    {
-        $senhaCriptografada = password_hash($senha, PASSWORD_BCRYPT);
-        $sql = "UPDATE usuarios SET email = ?, senha = ?, data_nascimento = ?, foto_perfil = ?, sobre_mim = ? WHERE id = ?";
-        $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([$email, $senhaCriptografada, $data_nascimento, $foto_perfil, $sobre_mim, $usuario_id]);
+    public function atualizarPerfil($usuarioId, $email, $senha, $dataNascimento, $sobreMim, $fotoPerfil = null)
+{
+    $sql = "UPDATE usuarios SET email = :email, data_nascimento = :data_nascimento, sobre_mim = :sobre_mim";
+
+    if ($senha) {
+        $sql .= ", senha = :senha";
     }
+
+    if ($fotoPerfil) {
+        $sql .= ", foto_perfil = :foto_perfil";
+    }
+
+    $sql .= " WHERE id = :id";
+
+    $stmt = $this->pdo->prepare($sql);
+
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':data_nascimento', $dataNascimento);
+    $stmt->bindParam(':sobre_mim', $sobreMim);
+
+    if ($senha) {
+        $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+        $stmt->bindParam(':senha', $senhaHash);
+    }
+
+    if ($fotoPerfil) {
+        $stmt->bindParam(':foto_perfil', $fotoPerfil);
+    }
+
+    $stmt->bindParam(':id', $usuarioId);
+
+    return $stmt->execute();
+}
+
+    public function buscarUsuarioPorId($id)
+{
+    $stmt = $this->pdo->prepare("SELECT * FROM usuarios WHERE id = :id");
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 
     // TESTES
     // Busca todas as perguntas do teste
@@ -141,13 +178,31 @@ class ProjetoModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function deletarPlanoAcao($id) {
+        $stmt = $this->pdo->prepare("DELETE FROM planos_acao WHERE id = ?");
+        return $stmt->execute([$id]);
+    }
+    
+
     // PROFISSÕES
-    public function buscarProfissoes($termo)
-    {
-        $stmt = $this->pdo->prepare("SELECT * FROM profissoes WHERE nome LIKE ?");
-        $stmt->execute(["%$termo%"]);
+  
+    public function buscarProfissoes($termo) {
+        // SQL com placeholder para a busca
+        $sql = "SELECT * FROM profissao WHERE nome LIKE :termo OR descricao LIKE :termo";
+        
+        // Prepara a consulta SQL
+        $stmt = $this->pdo->prepare($sql);
+        
+        // Substitui o placeholder :termo pelo valor fornecido
+        $stmt->bindValue(':termo', '%' . $termo . '%');
+        
+        // Executa a consulta
+        $stmt->execute();
+        
+        // Retorna os resultados
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
 
     // FEEDBACK
     public function inserirFeedback($email, $opiniao)
