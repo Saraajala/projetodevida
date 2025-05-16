@@ -1,14 +1,17 @@
 <?php
 require_once '../controller/ProjetoController.php';
 require_once '../config.php';
+
 session_start();
 
-$controller = new ProjetoController($pdo);
-$planos = $controller->exibirPlanoAcao();
+if (empty($_SESSION['usuario_id'])) {
+    header("Location: login.php");
+    exit();
+}
 
-// Buscar áreas do banco
-$stmt = $pdo->query("SELECT * FROM areas_plano");
-$areas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// $controller = new ProjetoController($pdo);
+$model = new ProjetoModel($pdo);
+$controller = new ProjetoController($model);
 
 $planoEditar = null;
 
@@ -22,6 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: " . $_SERVER['PHP_SELF']);
         exit();
     } elseif (isset($_POST["editar"])) {
+        // Buscar planos para encontrar o plano a editar
+        $planos = $controller->buscarPlanoAcao();
         foreach ($planos as $plano) {
             if ($plano["id"] == $_POST["id"]) {
                 $planoEditar = $plano;
@@ -34,70 +39,86 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 }
+
+// Buscar planos para exibir (se não veio do editar, para evitar recarregar dados desatualizados)
+if (!$planoEditar) {
+    $planos = $controller->buscarPlanoAcao($_SESSION['usuario_id']);
+}
+
+// Buscar áreas do banco para o select
+$stmt = $pdo->query("SELECT * FROM areas_plano");
+$areas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Plano de Ação</title>
 </head>
 <body>
     <h1>Plano de Ação</h1>
 
     <form method="POST">
-        <input type="hidden" name="id" value="<?php echo $planoEditar ? $planoEditar['id'] : ''; ?>">
+        <input type="hidden" name="id" value="<?= $planoEditar ? htmlspecialchars($planoEditar['id']) : '' ?>">
 
         <select name="area" required>
             <option value="">Selecione a área</option>
             <?php foreach ($areas as $area): ?>
-                <option value="<?= htmlspecialchars($area['nome']) ?>" <?= $planoEditar && $planoEditar['area'] === $area['nome'] ? 'selected' : '' ?>>
+                <option value="<?= htmlspecialchars($area['nome']) ?>" <?= ($planoEditar && $planoEditar['area'] === $area['nome']) ? 'selected' : '' ?>>
                     <?= htmlspecialchars($area['nome']) ?>
                 </option>
             <?php endforeach; ?>
         </select>
 
-        <input type="text" name="passo1" placeholder="Passo 1" value="<?php echo $planoEditar ? htmlspecialchars($planoEditar['passo1']) : ''; ?>">
-        <input type="text" name="passo2" placeholder="Passo 2" value="<?php echo $planoEditar ? htmlspecialchars($planoEditar['passo2']) : ''; ?>">
-        <input type="text" name="passo3" placeholder="Passo 3" value="<?php echo $planoEditar ? htmlspecialchars($planoEditar['passo3']) : ''; ?>">
-        <input type="text" name="como_irei_fazer" placeholder="Como irei fazer?" value="<?php echo $planoEditar ? htmlspecialchars($planoEditar['como_irei_fazer']) : ''; ?>">
-        <input type="date" name="prazo" required value="<?php echo $planoEditar ? htmlspecialchars($planoEditar['prazo']) : ''; ?>">
+        <input type="text" name="passo1" placeholder="Passo 1" value="<?= $planoEditar ? htmlspecialchars($planoEditar['passo1']) : '' ?>" required>
+        <input type="text" name="passo2" placeholder="Passo 2" value="<?= $planoEditar ? htmlspecialchars($planoEditar['passo2']) : '' ?>" required>
+        <input type="text" name="passo3" placeholder="Passo 3" value="<?= $planoEditar ? htmlspecialchars($planoEditar['passo3']) : '' ?>" required>
+        <input type="text" name="como_irei_fazer" placeholder="Como irei fazer?" value="<?= $planoEditar ? htmlspecialchars($planoEditar['como_irei_fazer']) : '' ?>" required>
+        <input type="date" name="prazo" required value="<?= $planoEditar ? htmlspecialchars($planoEditar['prazo']) : '' ?>">
 
-        <button type="submit" name="<?php echo $planoEditar ? 'atualizar' : 'adicionar'; ?>">
-            <?php echo $planoEditar ? 'Atualizar' : 'Adicionar'; ?>
+        <button type="submit" name="<?= $planoEditar ? 'atualizar' : 'adicionar' ?>">
+            <?= $planoEditar ? 'Atualizar' : 'Adicionar' ?>
         </button>
     </form>
 
     <h2>Meus Planos de Ação</h2>
 
     <?php if (!empty($planos)): ?>
-        <table border="1">
-            <tr>
-                <th>Área</th>
-                <th>Passo 1</th>
-                <th>Passo 2</th>
-                <th>Passo 3</th>
-                <th>Como Irei Fazer?</th>
-                <th>Prazo</th>
-                <th>Ações</th>
-            </tr>
-            <?php foreach ($planos as $plano): ?>
+        <table border="1" cellpadding="5" cellspacing="0">
+            <thead>
                 <tr>
-                    <form method="POST">
-                        <input type="hidden" name="id" value="<?php echo htmlspecialchars($plano['id']); ?>">
-                        <td><?php echo htmlspecialchars($plano['area']); ?></td>
-                        <td><?php echo htmlspecialchars($plano['passo1']); ?></td>
-                        <td><?php echo htmlspecialchars($plano['passo2']); ?></td>
-                        <td><?php echo htmlspecialchars($plano['passo3']); ?></td>
-                        <td><?php echo htmlspecialchars($plano['como_irei_fazer']); ?></td>
-                        <td><?php echo htmlspecialchars($plano['prazo']); ?></td>
-                        <td>
-                            <button type="submit" name="editar">Editar</button>
-                            <button type="submit" name="deletar">Deletar</button>
-                        </td>
-                    </form>
+                    <th>Área</th>
+                    <th>Passo 1</th>
+                    <th>Passo 2</th>
+                    <th>Passo 3</th>
+                    <th>Como Irei Fazer?</th>
+                    <th>Prazo</th>
+                    <th>Ações</th>
                 </tr>
-            <?php endforeach; ?>
+            </thead>
+            <tbody>
+                <?php foreach ($planos as $plano): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($plano['area']) ?></td>
+                        <td><?= htmlspecialchars($plano['passo1']) ?></td>
+                        <td><?= htmlspecialchars($plano['passo2']) ?></td>
+                        <td><?= htmlspecialchars($plano['passo3']) ?></td>
+                        <td><?= htmlspecialchars($plano['como_irei_fazer']) ?></td>
+                        <td><?= htmlspecialchars($plano['prazo']) ?></td>
+                        <td>
+                            <form method="POST" style="display:inline-block;">
+                                <input type="hidden" name="id" value="<?= htmlspecialchars($plano['id']) ?>">
+                                <button type="submit" name="editar">Editar</button>
+                            </form>
+                            <form method="POST" style="display:inline-block;" onsubmit="return confirm('Tem certeza que deseja deletar este plano?');">
+                                <input type="hidden" name="id" value="<?= htmlspecialchars($plano['id']) ?>">
+                                <button type="submit" name="deletar">Deletar</button>
+                            </form>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
         </table>
     <?php else: ?>
         <p>Nenhum plano de ação cadastrado.</p>

@@ -1,5 +1,5 @@
 <?php
-include_once '../config.php'; // Se for o caso
+include_once 'C:\Turma2\xampp\htdocs\projetodevida\config.php'; // Se for o caso
 
 
 class ProjetoModel
@@ -12,7 +12,7 @@ class ProjetoModel
     }
 
     // USUÁRIO
-    public function cadastrar($nome, $email, $senha, $data_nascimento,)
+    public function cadastrar($nome, $email, $senha, $data_nascimento)
     {
         $senhaCriptografada = password_hash($senha, PASSWORD_DEFAULT);
         $sql = "INSERT INTO usuarios (nome, email, senha, data_nascimento) VALUES (:nome, :email, :senha, :data_nascimento)";
@@ -58,46 +58,46 @@ class ProjetoModel
     }
 
     public function atualizarPerfil($usuarioId, $email, $senha, $dataNascimento, $sobreMim, $fotoPerfil = null)
-{
-    $sql = "UPDATE usuarios SET email = :email, data_nascimento = :data_nascimento, sobre_mim = :sobre_mim";
+    {
+        $sql = "UPDATE usuarios SET email = :email, data_nascimento = :data_nascimento, sobre_mim = :sobre_mim";
 
-    if ($senha) {
-        $sql .= ", senha = :senha";
+        if ($senha) {
+            $sql .= ", senha = :senha";
+        }
+
+        if ($fotoPerfil) {
+            $sql .= ", foto_perfil = :foto_perfil";
+        }
+
+        $sql .= " WHERE id = :id";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':data_nascimento', $dataNascimento);
+        $stmt->bindParam(':sobre_mim', $sobreMim);
+
+        if ($senha) {
+            $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+            $stmt->bindParam(':senha', $senhaHash);
+        }
+
+        if ($fotoPerfil) {
+            $stmt->bindParam(':foto_perfil', $fotoPerfil);
+        }
+
+        $stmt->bindParam(':id', $usuarioId);
+
+        return $stmt->execute();
     }
-
-    if ($fotoPerfil) {
-        $sql .= ", foto_perfil = :foto_perfil";
-    }
-
-    $sql .= " WHERE id = :id";
-
-    $stmt = $this->pdo->prepare($sql);
-
-    $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':data_nascimento', $dataNascimento);
-    $stmt->bindParam(':sobre_mim', $sobreMim);
-
-    if ($senha) {
-        $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
-        $stmt->bindParam(':senha', $senhaHash);
-    }
-
-    if ($fotoPerfil) {
-        $stmt->bindParam(':foto_perfil', $fotoPerfil);
-    }
-
-    $stmt->bindParam(':id', $usuarioId);
-
-    return $stmt->execute();
-}
 
     public function buscarUsuarioPorId($id)
-{
-    $stmt = $this->pdo->prepare("SELECT * FROM usuarios WHERE id = :id");
-    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-    $stmt->execute();
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM usuarios WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
 
     // TESTES
@@ -108,7 +108,8 @@ class ProjetoModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function buscarRespostas() {
+    public function buscarRespostas()
+    {
         try {
             $stmt = $this->pdo->query("SELECT id, pergunta_id, texto FROM respostas");
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -130,7 +131,7 @@ class ProjetoModel
         // Alteração para usar a coluna resposta_id
         $sql = "INSERT INTO respostas_teste (usuario_id, resposta_id, resposta) VALUES (?, ?, ?)";
         $stmt = $this->pdo->prepare($sql);
-    
+
         // Inserir as respostas na tabela
         foreach ($respostas as $resposta_id => $resposta) {
             if (!$stmt->execute([$usuario_id, $resposta_id, $resposta])) {
@@ -141,7 +142,8 @@ class ProjetoModel
     }
 
     // Busca os resultados individuais do teste
-    public function buscarResultadosTeste($usuario_id) {
+    public function buscarResultadosTeste($usuario_id)
+    {
         $stmt = $this->pdo->prepare("SELECT * FROM resultados WHERE usuario_id = ? ORDER BY id DESC");
         $stmt->execute([$usuario_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -157,50 +159,110 @@ class ProjetoModel
     }
 
     // PLANO DE AÇÃO
+
+    // Adiciona um novo plano de ação
     public function adicionarPlanoAcao($usuario_id, $area, $passo1, $passo2, $passo3, $como_irei_fazer, $prazo)
     {
-        $sql = "INSERT INTO planos_acao (usuario_id, area, passo1, passo2, passo3, como_irei_fazer, prazo) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO planos_acao (usuario_id, area, passo1, passo2, passo3, como_irei_fazer, prazo)
+            VALUES (:usuario_id, :area, :passo1, :passo2, :passo3, :como_irei_fazer, :prazo)";
         $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([$usuario_id, $area, $passo1, $passo2, $passo3, $como_irei_fazer, $prazo]);
+        return $stmt->execute([
+            ':usuario_id' => $usuario_id,
+            ':area' => $area,
+            ':passo1' => $passo1,
+            ':passo2' => $passo2,
+            ':passo3' => $passo3,
+            ':como_irei_fazer' => $como_irei_fazer,
+            ':prazo' => $prazo
+        ]);
     }
 
+    // Atualiza um plano de ação existente
     public function atualizarPlanoAcao($id, $usuario_id, $area, $passo1, $passo2, $passo3, $como_irei_fazer, $prazo)
     {
-        $sql = "UPDATE planos_acao SET area = ?, passo1 = ?, passo2 = ?, passo3 = ?, como_irei_fazer = ?, prazo = ? WHERE id = ? AND usuario_id = ?";
+        $sql = "UPDATE planos_acao
+            SET area = :area, passo1 = :passo1, passo2 = :passo2, passo3 = :passo3,
+                como_irei_fazer = :como_irei_fazer, prazo = :prazo
+            WHERE id = :id AND usuario_id = :usuario_id";
         $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([$area, $passo1, $passo2, $passo3, $como_irei_fazer, $prazo, $id, $usuario_id]);
+        return $stmt->execute([
+            ':area' => $area,
+            ':passo1' => $passo1,
+            ':passo2' => $passo2,
+            ':passo3' => $passo3,
+            ':como_irei_fazer' => $como_irei_fazer,
+            ':prazo' => $prazo,
+            ':id' => $id,
+            ':usuario_id' => $usuario_id
+        ]);
     }
 
-    public function buscarPlanoAcao($usuario_id)
+    public function buscarPlanoAcao($usuarioId)
     {
         $stmt = $this->pdo->prepare("SELECT * FROM planos_acao WHERE usuario_id = ?");
-        $stmt->execute([$usuario_id]);
+        $stmt->execute([$usuarioId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function deletarPlanoAcao($id) {
-        $stmt = $this->pdo->prepare("DELETE FROM planos_acao WHERE id = ?");
-        return $stmt->execute([$id]);
+    // Deleta um plano de ação por ID
+    public function deletarPlanoAcao($id, $usuario_id)
+    {
+        $sql = "DELETE FROM planos_acao WHERE id = :id AND usuario_id = :usuario_id";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([':id' => $id, ':usuario_id' => $usuario_id]);
     }
-    
+
+
 
     // PROFISSÕES
-  
-    public function buscarProfissoes($termo) {
-        // SQL com placeholder para a busca
-        $sql = "SELECT * FROM profissao WHERE nome LIKE :termo OR descricao LIKE :termo";
-        
-        // Prepara a consulta SQL
+
+    public function buscarProfissoes($filtro)
+    {
+        $sql = "SELECT * FROM profissao WHERE LOWER(nome) = LOWER(:filtro)";
         $stmt = $this->pdo->prepare($sql);
-        
-        // Substitui o placeholder :termo pelo valor fornecido
-        $stmt->bindValue(':termo', '%' . $termo . '%');
-        
-        // Executa a consulta
+        $stmt->bindValue(':filtro', $filtro);
         $stmt->execute();
-        
-        // Retorna os resultados
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Buscar planejamento do usuário
+    public function buscarPorUsuario($usuario_id)
+    {
+        $sql = "SELECT * FROM planejamento WHERE usuario_id = :usuario_id LIMIT 1";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':usuario_id', $usuario_id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function salvarPlanejamento($usuario_id, $aprendendo, $fazendo, $preciso, $meta_curto, $meta_medio, $meta_longo)
+    {
+        // Verifica se já existe registro para o usuário
+        $existente = $this->buscarPorUsuario($usuario_id);
+
+        if ($existente) {
+            // Atualizar
+            $sql = "UPDATE planejamento SET aprendendo = :aprendendo, fazendo = :fazendo, preciso = :preciso,
+                meta_curto = :meta_curto, meta_medio = :meta_medio, meta_longo = :meta_longo,
+                data_atualizacao = NOW()
+                WHERE usuario_id = :usuario_id";
+            $stmt = $this->pdo->prepare($sql);
+        } else {
+            // Inserir
+            $sql = "INSERT INTO planejamento (usuario_id, aprendendo, fazendo, preciso, meta_curto, meta_medio, meta_longo)
+                VALUES (:usuario_id, :aprendendo, :fazendo, :preciso, :meta_curto, :meta_medio, :meta_longo)";
+            $stmt = $this->pdo->prepare($sql);
+        }
+
+        // Vincular todos os parâmetros sempre
+        $stmt->bindValue(':usuario_id', $usuario_id, PDO::PARAM_INT);
+        $stmt->bindValue(':aprendendo', $aprendendo, PDO::PARAM_STR);
+        $stmt->bindValue(':fazendo', $fazendo, PDO::PARAM_STR);
+        $stmt->bindValue(':preciso', $preciso, PDO::PARAM_STR);
+        $stmt->bindValue(':meta_curto', $meta_curto, PDO::PARAM_STR);
+        $stmt->bindValue(':meta_medio', $meta_medio, PDO::PARAM_STR);
+        $stmt->bindValue(':meta_longo', $meta_longo, PDO::PARAM_STR);
+        return $stmt->execute();
     }
 
 

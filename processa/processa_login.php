@@ -3,7 +3,11 @@ session_start();
 require_once '../config.php';
 require_once '../controller/ProjetoController.php';
 
+require_once '../model/ProjetoModel.php';
+
 $controller = new ProjetoController($pdo);
+$model = new ProjetoModel($pdo);
+$controller = new ProjetoController($model);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];

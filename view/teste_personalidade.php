@@ -29,7 +29,7 @@ if (isset($_GET['erro']) && $_GET['erro'] == 1) {
             <nav>
                 <ul class="menu-central">
                     <li><a href="../view/plano_acao.php">Plano de ação</a></li>
-                    <li><a href="../view/planejamento_futuro.php">Planeamento do futuro</a></li>
+                    <li><a href="../view/form_planejamento.php">Planeamento do futuro</a></li>
                 </ul>
             </nav>
 

@@ -1,42 +1,39 @@
 <?php
 session_start();
 
-// Carrega os arquivos de configuração e controlador
+// Load required files
 require_once '../config.php';
+require_once '../model/ProjetoModel.php';  // Make sure this path is correct
 require_once '../controller/ProjetoController.php';
 
-// Inicializa o controlador de projeto
-$controller = new ProjetoController($pdo);
+// Initialize the model first, then the controller
+$model = new ProjetoModel($pdo);  // Pass PDO to model
+$controller = new ProjetoController($model);  // Pass model to controller
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Obtém os dados do formulário, com valor padrão vazio caso não existam
+    // Get form data with default empty values
     $nome = $_POST['nome'] ?? '';
     $email = $_POST['email'] ?? '';
     $senha = $_POST['senha'] ?? '';
     $dataNascimento = $_POST['data_nascimento'] ?? '';
 
-    // Chama o método de cadastro no controlador
+    // Call the registration method
     $resultado = $controller->cadastrar($nome, $email, $senha, $dataNascimento);
 
     if ($resultado['sucesso']) {
-        // Se o cadastro foi bem-sucedido, define variáveis de sessão
+        // Registration successful
         $_SESSION['msg'] = $resultado['mensagem'];
         $_SESSION['tipo_msg'] = 'sucesso';
-        $_SESSION['usuario_id'] = $resultado['id']; // Define o ID do usuário
-
-        // Redireciona para a página inicial (index.php) após o cadastro
-        var_dump('estou aqui');
-        die();
+        $_SESSION['usuario_id'] = $resultado['id'];
+        
         header("Location: ../../index.php");
         exit();
     } else {
-        // Em caso de erro no cadastro, define as mensagens de erro
+        // Registration failed
         $_SESSION['msg'] = $resultado['mensagem'];
         $_SESSION['tipo_msg'] = 'erro';
-
-        // Redireciona de volta para a página de cadastro (opcional, descomente se necessário)
-        // header("Location: ../index.php");
-        // exit();
+        header("Location: ../view/cadastro.php");
+        exit();
     }
 }
 ?>

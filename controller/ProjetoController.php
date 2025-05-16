@@ -1,67 +1,111 @@
 <?php
-require_once 'C:/Turma2/xampp/htdocs/projetodevida/model/ProjetoModel.php';
+require_once 'C:\Turma2\xampp\htdocs\projetodevida\model\ProjetoModel.php';
 
 class ProjetoController
 {
     private $projetoModel;
 
-    public function __construct($pdo)
+    public function __construct($projetoModel)
     {
-        $this->projetoModel = new ProjetoModel($pdo);
+        $this->projetoModel = $projetoModel;
     }
 
     // USUÁRIO
-    public function cadastrar($nome, $email, $senha, $data_nascimento)
-    {
-        // Verificar se o email já está cadastrado
-        $usuarioExistente = $this->projetoModel->buscarUsuarioPorEmail($email);
-    
-        if ($usuarioExistente) {
-            // Se o email já existe, retornar a mensagem de erro
-            return [
-                'sucesso' => false,
-                'mensagem' => 'Este e-mail já está cadastrado.'
-            ];
-        }
-    
-        // Tentar cadastrar o novo usuário
-        $resultado = $this->projetoModel->cadastrar($nome, $email, $senha, $data_nascimento);
-    
-        if ($resultado) {
-            // Redirecionar para o index.php após sucesso
-            header("Location: /projetodevida/index.php?msg=sucesso_cadastro");
-            exit; // Importante para garantir que o código pare de executar aqui
-        } else {
-            // Retornar erro caso o cadastro falhe
-            return [
-                'sucesso' => false,
-                'mensagem' => 'Erro ao cadastrar usuário.'
-            ];
-        }
+    // public function cadastrar($nome, $email, $senha, $data_nascimento)
+    // {
+    //     $usuarioExistente = $this->projetoModel->buscarUsuarioPorEmail($email);
+
+    //     if ($usuarioExistente) {
+    //         return [
+    //             'sucesso' => false,
+    //             'mensagem' => 'Este e-mail já está cadastrado.'
+    //         ];
+    //     }
+
+    //     $resultado = $this->projetoModel->cadastrar($nome, $email, $senha, $data_nascimento);
+
+    //     if ($resultado) {
+    //         header("Location: /projetodevida/index.php?msg=sucesso_cadastro");
+    //         exit;
+    //     } else {
+    //         return [
+    //             'sucesso' => false,
+    //             'mensagem' => 'Erro ao cadastrar usuário.'
+    //         ];
+    //     }
+    // }
+public function cadastrar($nome, $email, $senha, $data_nascimento)
+{
+    // Call the method on the model, not on PDO
+    $usuarioExistente = $this->projetoModel->buscarUsuarioPorEmail($email);
+
+    if ($usuarioExistente) {
+        return [
+            'sucesso' => false,
+            'mensagem' => 'Este e-mail já está cadastrado.'
+        ];
     }
 
-    public function login($email, $senha)
-    {
-        session_start(); // garante que a sessão esteja ativa
+    $resultado = $this->projetoModel->cadastrar($nome, $email, $senha, $data_nascimento);
 
-        $usuario = $this->projetoModel->login($email);
-
-        if (!$usuario) {
-            $_SESSION['msg'] = "erro usuario";
-            return;
-        }
-
-        if (!password_verify($senha, $usuario['senha'])) {
-            $_SESSION['msg'] = "erro senha";
-            return;
-        }
-
-        // Salva ID do usuário e redireciona para index.php
-        $_SESSION['usuario_id'] = $usuario['id'];
-        $_SESSION['msg'] = "sucesso";
-        header('Location: ../index.php'); // voltar para a página inicial
-        exit;
+    if ($resultado) {
+        return [
+            'sucesso' => true,
+            'mensagem' => 'Cadastro realizado com sucesso!',
+            'id' => $this->projetoModel->getLastInsertId()
+        ];
+    } else {
+        return [
+            'sucesso' => false,
+            'mensagem' => 'Erro ao cadastrar usuário.'
+        ];
     }
+}
+        // public function login($email, $senha)
+        // {
+        //     session_start();
+
+        //     $usuario = $this->projetoModel->login($email);
+
+        //     if (!$usuario) {
+        //         $_SESSION['msg'] = "erro usuario";
+        //         return;
+        //     }
+
+        //     if (!password_verify($senha, $usuario['senha'])) {
+        //         $_SESSION['msg'] = "erro senha";
+        //         return;
+        //     }
+
+        //     $_SESSION['usuario_id'] = $usuario['id'];
+        //     $_SESSION['msg'] = "sucesso";
+        //     header('Location: ../index.php');
+        //     exit;
+        // }
+        public function login($email, $senha)
+{
+    if (session_status() !== PHP_SESSION_ACTIVE) {
+        session_start();
+    }
+
+    // Call the method on the model, not on PDO
+    $usuario = $this->projetoModel->login($email);
+
+    if (!$usuario) {
+        $_SESSION['msg'] = "erro usuario";
+        return;
+    }
+
+    if (!password_verify($senha, $usuario['senha'])) {
+        $_SESSION['msg'] = "erro senha";
+        return;
+    }
+
+    $_SESSION['usuario_id'] = $usuario['id'];
+    $_SESSION['msg'] = "sucesso";
+    header('Location: ../index.php');
+    exit;
+}
 
     public function logout()
     {
@@ -91,58 +135,44 @@ class ProjetoController
             }
         }
     }
-    
+
     public function atualizarPerfil()
     {
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
-            // Recupera os dados enviados
             $usuarioId = $_SESSION['usuario_id'];
             $email = $_POST['email'];
             $dataNascimento = $_POST['data_nascimento'];
             $sobreMim = $_POST['sobre_mim'];
             $senha = $_POST['senha'];
-    
-            // Trata o upload da imagem
+
             $nomeArquivoFinal = null;
             if (isset($_FILES['fotoPerfil']) && $_FILES['fotoPerfil']['error'] === UPLOAD_ERR_OK) {
-                // Obtemos a extensão do arquivo
                 $extensao = pathinfo($_FILES['fotoPerfil']['name'], PATHINFO_EXTENSION);
-                // Geramos um nome único para o arquivo
                 $nomeArquivoFinal = uniqid('perfil_', true) . '.' . $extensao;
-                // Caminho de destino para a pasta "imagens"
                 $caminhoDestino = "../imagens/" . $nomeArquivoFinal;
-    
-                // Verifica se a pasta existe, caso contrário cria
+
                 if (!file_exists('../imagens')) {
                     mkdir('../imagens', 0777, true);
                 }
-    
-                // Move o arquivo para o destino
-                if (move_uploaded_file($_FILES['fotoPerfil']['tmp_name'], $caminhoDestino)) {
-                    // Sucesso no upload
-                } else {
-                    echo "Erro ao mover a imagem.";
-                    $nomeArquivoFinal = null; // Se houve erro, não define o arquivo
+
+                if (!move_uploaded_file($_FILES['fotoPerfil']['tmp_name'], $caminhoDestino)) {
+                    $nomeArquivoFinal = null;
                 }
             }
-    
-            // Se a senha não foi preenchida, ela não será alterada
+
             if (empty($senha)) {
                 $senha = null;
             }
-    
-            // Chama o Model para atualizar os dados no banco
+
             $this->projetoModel->atualizarPerfil($usuarioId, $email, $senha, $dataNascimento, $sobreMim, $nomeArquivoFinal);
-    
-            // Atualiza sessão com os novos dados
+
             $_SESSION['email'] = $email;
             $_SESSION['data_nascimento'] = $dataNascimento;
             $_SESSION['sobre_mim'] = $sobreMim;
             if ($nomeArquivoFinal) {
                 $_SESSION['foto_perfil'] = $nomeArquivoFinal;
             }
-    
-            // Redireciona para a página de perfil
+
             header("Location: ../view/perfil.php");
             exit;
         }
@@ -159,7 +189,6 @@ class ProjetoController
         $dados = $this->projetoModel->buscarUsuarioPorId($usuarioId);
 
         if ($dados) {
-            // Atualiza os dados da sessão com as informações atuais do banco
             $_SESSION['email'] = $dados['email'];
             $_SESSION['data_nascimento'] = $dados['data_nascimento'];
             $_SESSION['foto_perfil'] = $dados['foto_perfil'] ?? 'padrao.png';
@@ -169,62 +198,87 @@ class ProjetoController
         include '../view/perfil.php';
     }
 
-
- // PROFISSÕES
- public function buscarProfissoes($termo) {
-    return $this->model->buscarProfissoes($termo);
-}
-
-
-    public function adicionarPlanoAcao($area, $passo1, $passo2, $passo3, $como_irei_fazer, $prazo)
+     public function adicionarPlanoAcao($area, $passo1, $passo2, $passo3, $como_irei_fazer, $prazo)
     {
-        if (!isset($_SESSION["usuario_id"])) {
-            echo "Usuário não autenticado!";
-            return;
+        if (empty($_SESSION["usuario_id"])) {
+            // Melhor redirecionar para login ou página de erro
+            header("Location: login.php?msg=nao_autenticado");
+            exit();
         }
-    
+
         $usuario_id = $_SESSION["usuario_id"];
+
         $res = $this->projetoModel->adicionarPlanoAcao($usuario_id, $area, $passo1, $passo2, $passo3, $como_irei_fazer, $prazo);
-    
-        if ($res) {
-            header("Location: plano_acao.php?msg=sucesso");
-        } else {
-            header("Location: plano_acao.php?msg=erro");
-        }
+
+        header("Location: plano_acao.php?msg=" . ($res ? "sucesso" : "erro"));
         exit();
     }
-    
+
     public function atualizarPlanoAcao($id, $area, $passo1, $passo2, $passo3, $como_irei_fazer, $prazo)
     {
-        if (!isset($_SESSION["usuario_id"])) {
-            echo "Usuário não autenticado!";
-            return;
+        if (empty($_SESSION["usuario_id"])) {
+            header("Location: login.php?msg=nao_autenticado");
+            exit();
         }
-    
+
         $usuario_id = $_SESSION["usuario_id"];
+
         $res = $this->projetoModel->atualizarPlanoAcao($id, $usuario_id, $area, $passo1, $passo2, $passo3, $como_irei_fazer, $prazo);
-    
-        if ($res) {
-            header("Location: plano_acao.php?msg=atualizado");
-        } else {
-            header("Location: plano_acao.php?msg=erro_atualizar");
-        }
+
+        header("Location: plano_acao.php?msg=" . ($res ? "atualizado" : "erro_atualizar"));
         exit();
     }
-    
-    public function exibirPlanoAcao()
-    {
-        if (!isset($_SESSION["usuario_id"])) {
-            return [];
-        }
-        return $this->projetoModel->buscarPlanoAcao($_SESSION["usuario_id"]);
+
+public function buscarPlanoAcao()
+{
+    if (empty($_SESSION["usuario_id"])) {
+        header("Location: login.php?msg=nao_autenticado");
+        exit();
     }
 
-    public function deletarPlanoAcao($id) {
-        return $this->projetoModel->deletarPlanoAcao($id);
-        return $model->deletarPlanoAcao($id);
-    }    
-    
+    $usuarioId = $_SESSION['usuario_id'];
+
+    // Call the method on the model, not on PDO directly
+    return $this->projetoModel->buscarPlanoAcao($usuarioId);
+}
+
+    public function deletarPlanoAcao($id)
+{
+    if (empty($_SESSION["usuario_id"])) {
+        header("Location: login.php?msg=nao_autenticado");
+        exit();
+    }
+
+    $usuario_id = $_SESSION["usuario_id"];
+    $res = $this->projetoModel->deletarPlanoAcao($id, $usuario_id);
+
+    header("Location: plano_acao.php?msg=" . ($res ? "deletado" : "erro_deletar"));
+    exit();
+}
+
+    // PROFISSÕES
+    public function buscarProfissoes($filtro)
+    {
+        return $this->projetoModel->buscarProfissoes($filtro);
+    }
+
+    public function buscarPlanejamento($usuario_id)
+    {
+        return $this->projetoModel->buscarPorUsuario($usuario_id);
+    }
+
+    public function salvarPlanejamento($usuario_id, $dados)
+    {
+        return $this->projetoModel->salvarPlanejamento(
+            $usuario_id,
+            $dados['aprendendo'] ?? '',
+            $dados['fazendo'] ?? '',
+            $dados['preciso'] ?? '',
+            $dados['meta_curto'] ?? '',
+            $dados['meta_medio'] ?? '',
+            $dados['meta_longo'] ?? ''
+        );
+    }
 
     // FEEDBACK
     public function salvarFeedback()
@@ -243,7 +297,6 @@ class ProjetoController
         $opiniao = $_POST['opiniao'] ?? '';
 
         if (!empty($email) && !empty($opiniao)) {
-            // Corrigido aqui:
             $this->projetoModel->salvarFeedback($usuarioId, $email, $opiniao);
             header("Location: view/meus_feedbacks.php");
             exit;
@@ -257,43 +310,12 @@ class ProjetoController
     {
         $perguntas = $this->projetoModel->buscarPerguntas();
         $respostas = $this->projetoModel->buscarRespostas();
-    
-        // Verificar o conteúdo das variáveis
-        var_dump($perguntas); // Verifique se as perguntas estão sendo recuperadas corretamente
-        var_dump($respostas);  // Verifique se as respostas estão sendo recuperadas corretamente
-    
-        // Organiza as respostas por pergunta_id
+
         $respostasPorPergunta = [];
         foreach ($respostas as $resposta) {
             $respostasPorPergunta[$resposta['pergunta_id']][] = $resposta;
         }
-    
-        // Passa os dados para a view
-        include 'views/teste_personalidade.php';
-    }
 
-    public function buscarResultadosTeste($usuario_id)
-    {
-        return $this->projetoModel->buscarResultadosTeste($usuario_id);
-    }
-
-    public function salvarRespostasTeste($usuario_id, $respostas)
-    {
-        return $this->projetoModel->salvarRespostasTeste($usuario_id, $respostas);
-    }
-
-    public function buscarPerguntasTeste()
-    {
-        return $this->projetoModel->buscarPerguntas();
-    }
-
-    public function agruparResultadosPorTipo($usuario_id)
-    {
-        return $this->projetoModel->agruparResultadosPorTipo($usuario_id);
-    }
-
-    public function buscarRespostas()
-    {
-        return $this->projetoModel->buscarRespostas();
+        include '../view/teste_personalidade.php';
     }
 }

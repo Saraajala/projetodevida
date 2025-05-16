@@ -15,11 +15,24 @@ if (isset($_SESSION['usuario_id'])) {
 ?>
 
 <?php
-if (isset($_GET['action']) && $_GET['action'] == 'salvarFeedback') {
-    require_once 'config.php'; // conexão certa
-    require_once 'controller/ProjetoController.php';
+// if (isset($_GET['action']) && $_GET['action'] == 'salvarFeedback') {
+//     require_once 'config.php'; // conexão certa
+//     require_once 'C:\Turma2\xampp\htdocs\projetodevida\controller\ProjetoController.php';
+//     $model = new ProjetoModel($pdo);
+// $controller = new ProjetoController($model);
 
-    $controller = new ProjetoController($pdo);
+//     $controller = new ProjetoController($pdo);
+//     $controller->salvarFeedback();
+// }
+if (isset($_GET['action']) && $_GET['action'] == 'salvarFeedback') {
+    require_once 'config.php';
+    require_once 'C:\Turma2\xampp\htdocs\projetodevida\model/ProjetoModel.php'; // Add this line
+    require_once 'C:\Turma2\xampp\htdocs\projetodevida\controller/ProjetoController.php';
+    
+    // Create model first, then controller
+    $model = new ProjetoModel($pdo);
+    $controller = new ProjetoController($model);
+    
     $controller->salvarFeedback();
 }
 ?>
@@ -42,7 +55,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'salvarFeedback') {
             <ul class="menu-central">
                 <li><a href="view/plano_acao.php">Plano de ação</a></li>
                 <li><a href="view/teste_personalidade.php">Teste de personalidade</a></li>
-                <li><a href="view/planejamento_futuro.php">Planeamento do futuro</a></li>
+                <li><a href="view/form_planejamento.php">Planeamento do futuro</a></li>
             </ul>
         </nav>
 
