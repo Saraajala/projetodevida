@@ -3,19 +3,16 @@ session_start();
 require_once '../config.php';
 require_once '../controller/ProjetoController.php';
 
-require_once '../model/ProjetoModel.php';
-
 $controller = new ProjetoController($pdo);
-$model = new ProjetoModel($pdo);
-$controller = new ProjetoController($model);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $senha = $_POST['senha'];
+   
 
     // Verifica o login
     $resultado = $controller->login($email, $senha);
-
+  
     if ($resultado) {
         $_SESSION['usuario_id'] = $resultado['id'];
         $_SESSION['email'] = $resultado['email'];

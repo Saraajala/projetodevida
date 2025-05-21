@@ -4,15 +4,15 @@ session_start();
 
 ?>
 
-<?php
+  <?php
 
-if (isset($_SESSION['usuario_id'])) {
+// if (isset($_SESSION['usuario_id'])) {
     // Usuário logado, você pode utilizar o $_SESSION['usuario_id'] para identificar
-    echo "Usuário logado: " . $_SESSION['usuario_id'];
-} else {
-    echo "Usuário NÃO logado.";
-}
-?>
+   // echo "Usuário logado: " . $_SESSION['usuario_id'];
+//}// else {
+   // echo "Usuário NÃO logado."; //
+//}
+?> 
 
 <?php
 // if (isset($_GET['action']) && $_GET['action'] == 'salvarFeedback') {
@@ -206,6 +206,8 @@ if (isset($_GET['action']) && $_GET['action'] == 'salvarFeedback') {
             }
             ?>
         </div>
+
+        <br><br>
 
         <div class="direitos-index">
             <p>© TODOS OS DIREITOS RESERVADOS</p>

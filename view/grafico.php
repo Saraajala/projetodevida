@@ -140,7 +140,7 @@ WHERE rt.usuario_id = ? AND rt.teste_id = ? AND rt.tipo = ?";
     <nav>
       <ul class="menu-central">
         <li><a href="../view/plano_acao.php">Plano de ação</a></li>
-        <li><a href="../view/planejamento_futuro.php">Planeamento do futuro</a></li>
+        <li><a href="../view/form_planejamento.php">Planeamento do futuro</a></li>
       </ul>
     </nav>
 

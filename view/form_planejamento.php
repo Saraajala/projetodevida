@@ -12,7 +12,7 @@ require_once "../model/ProjetoModel.php";
 require_once "../controller/ProjetoController.php";
 
 $model = new ProjetoModel($pdo);
-$controller = new ProjetoController($model);
+$controller = new ProjetoController($pdo);
 
 $usuario_id = $_SESSION['usuario_id'];
 $mensagem = "";

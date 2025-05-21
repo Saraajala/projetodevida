@@ -1,0 +1,121 @@
+/* Importando fontes */
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Abel&display=swap');
+
+:root {
+    --cor-primaria: #671613;
+    --cor-secundaria: #2f1317;
+    --cor-terciaria: #e5dfcd;
+    --cor-quaternaria: #ffffff;
+}
+
+body {
+    overflow-x: hidden; /* Evita a rolagem horizontal */
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: var(--cor-primaria);
+}
+
+main {
+    flex: 1;
+}
+
+/* HEADER FIXADO NO TOPO */
+.header-sobre {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--cor-primaria);
+    padding: 10px 20px;
+}
+/* LOGO AJUSTADA */
+.logo {
+    max-height: 60px;
+    width: auto;
+}
+
+/* Menu centralizado */
+.menu-central {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Itens do menu */
+.menu-central a {
+    color: var(--cor-quaternaria);
+    text-decoration: none;
+    font-size: 16px;
+    background-color: transparent;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--cor-quaternaria);
+    border-radius: 20px;
+    transition: 0.3s;
+}
+
+.menu-central a:hover {
+    background-color: var(--cor-quaternaria);
+    color: var(--cor-primaria);
+}
+
+/* Perfil à direita */
+.perfil-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.icone-perfil {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: transform 0.2s ease;
+}
+
+.icone-perfil:hover {
+    transform: scale(1.1);
+}
+
+.sair {
+    color: var(--cor-quaternaria);
+    text-decoration: none;
+    font-size: 16px;
+    border: 1px solid var(--cor-quaternaria);
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+}
+
+.sair:hover {
+    background-color: var(--cor-quaternaria);
+    color: var(--cor-primaria);
+}
+
+.imagem-planodeacao {
+    position: relative; /* Importante para o posicionamento absoluto do título */
+    height: 450px;
+    width: 1500px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Garante centralização do conteúdo direto também */
+    overflow: hidden;
+}
+
+.titulo-plano {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--cor-secundaria);
+    color: var(--cor-quaternaria);
+    font-family: 'Newsreader';
+    font-size: 60px;
+    padding: 40px 80px;
+    border-radius: 10px;
+    text-align: center;
+}
+

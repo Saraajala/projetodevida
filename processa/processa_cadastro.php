@@ -1,40 +1,58 @@
 <?php
-session_start();
-
-// Carrega os arquivos de configuração e controlador
 require_once '../config.php';
+require_once '../model/ProjetoModel.php';
 require_once '../controller/ProjetoController.php';
 
-// Inicializa o controlador de projeto
-$controller = new ProjetoController($pdo);
 
+// Verifica se a requisição foi feita por POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Obtém os dados do formulário, com valor padrão vazio caso não existam
-    $nome = $_POST['nome'] ?? '';
-    $email = $_POST['email'] ?? '';
+    // Sanitiza e valida os dados recebidos
+    $nome = trim($_POST['nome'] ?? '');
+    $email = trim($_POST['email'] ?? '');
     $senha = $_POST['senha'] ?? '';
-    $dataNascimento = $_POST['data_nascimento'] ?? '';
+    $data_nascimento = $_POST['data_nascimento'] ?? '';
 
-    // Chama o método de cadastro no controlador
-    $resultado = $controller->cadastrar($nome, $email, $senha, $dataNascimento);
+    // Verifica se todos os campos obrigatórios estão preenchidos
+    if (empty($nome) || empty($email) || empty($senha) || empty($data_nascimento)) {
+        header("Location: cadastro.php?msg=campos_obrigatorios");
+        exit;
+    }
+
+    // Valida e-mail
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        header("Location: cadastro.php?msg=email_invalido");
+        exit;
+    }
+
+    // Valida formato da data (opcional)
+    $data_formatada = date('Y-m-d', strtotime($data_nascimento));
+    
+    if (!$data_formatada) {
+        header("Location: cadastro.php?msg=data_invalida");
+        exit;
+    }
+
+    // Criptografa a senha com password_hash
+    //$senhaCriptografada = password_hash($senha, PASSWORD_DEFAULT);
+    // $resultado = $controller->cadastrar($nome, $email, $senha, $data_nascimento);
+
+    // Instancia os objetos
+    $model = new ProjetoModel($pdo); // Usa a conexão do config.php
+    $controller = new ProjetoController($pdo);
+
+    // Tenta cadastrar
+    $resultado = $controller->cadastrar($nome, $email, $senha, $data_formatada);
 
     if ($resultado['sucesso']) {
-        // Se o cadastro foi bem-sucedido, define variáveis de sessão
-        $_SESSION['msg'] = $resultado['mensagem'];
-        $_SESSION['tipo_msg'] = 'sucesso';
-        $_SESSION['usuario_id'] = $resultado['id']; // Define o ID do usuário
-
-        // Redireciona para a página inicial (index.php) após o cadastro
-        header("Location: ../../index.php");
-        exit();
+        header("Location: ../index.php?msg=cadastro_sucesso");
+        exit;
     } else {
-        // Em caso de erro no cadastro, define as mensagens de erro
-        $_SESSION['msg'] = $resultado['mensagem'];
-        $_SESSION['tipo_msg'] = 'erro';
-
-        // Redireciona de volta para a página de cadastro (opcional, descomente se necessário)
-        header("Location: ../index.php");
-        exit();
+        $mensagemErro = urlencode($resultado['mensagem']);
+        header("Location: ../view/cadastro.php?msg=erro&erro=" . $mensagemErro);
+        exit;
     }
+} else {
+    // Redireciona se o acesso for indevido
+    header("Location: ../view/cadastro.php");
+    exit;
 }
-?>

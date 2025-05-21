@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Formatação da data para exibição
 $dataFormatada = '';
 if (!empty($usuario['data_nascimento'])) {
-    $dataFormatada = date('Y-m-d', strtotime($usuario['data_nascimento']));
+    $dataFormatada = date('Y-d-m', strtotime($usuario['data_nascimento']));
 }
 ?>
 

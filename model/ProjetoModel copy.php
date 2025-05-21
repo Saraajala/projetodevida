@@ -4,21 +4,18 @@ include_once 'C:\Turma2\xampp\htdocs\projetodevida\config.php'; // Se for o caso
 
 class ProjetoModel
 {
-     private $pdo;
+    private $pdo;
 
     public function __construct($pdo)
     {
         $this->pdo = $pdo;
     }
 
-
-
     // USUÁRIO
     public function cadastrar($nome, $email, $senha, $data_nascimento)
     {
         $senhaCriptografada = password_hash($senha, PASSWORD_DEFAULT);
         $sql = "INSERT INTO usuarios (nome, email, senha, data_nascimento) VALUES (:nome, :email, :senha, :data_nascimento)";
-
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':nome', $nome);
         $stmt->bindParam(':email', $email);
@@ -39,12 +36,12 @@ class ProjetoModel
 
 
 
-public function buscarUsuarioPorEmail($email) {
-    $stmt = $this->pdo->prepare("SELECT * FROM usuarios WHERE email = :email");
-    $stmt->bindParam(':email', $email);
-    $stmt->execute();
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
+    public function buscarUsuarioPorEmail($email)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM usuarios WHERE email = ?");
+        $stmt->execute([$email]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
     public function atualizarSenha($email, $novaSenha)
     {
@@ -60,48 +57,40 @@ public function buscarUsuarioPorEmail($email) {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
- public function atualizarPerfil($usuarioId, $email, $senha, $dataNascimento, $sobreMim, $fotoPerfil = null)
-{
-    try {
-        $sql = "UPDATE usuarios SET 
-                email = :email, 
-                data_nascimento = :data_nascimento, 
-                sobre_mim = :sobre_mim";
-        
-        // Adiciona a senha apenas se foi fornecida
-        if ($senha !== null) {
+    public function atualizarPerfil($usuarioId, $email, $senha, $dataNascimento, $sobreMim, $fotoPerfil = null)
+    {
+        $sql = "UPDATE usuarios SET email = :email, data_nascimento = :data_nascimento, sobre_mim = :sobre_mim";
+
+        if ($senha) {
             $sql .= ", senha = :senha";
         }
-        
-        // Adiciona a foto apenas se foi fornecida
-        if ($fotoPerfil !== null) {
+
+        if ($fotoPerfil) {
             $sql .= ", foto_perfil = :foto_perfil";
         }
-        
+
         $sql .= " WHERE id = :id";
-        
+
         $stmt = $this->pdo->prepare($sql);
-        
-        // Bind dos parâmetros obrigatórios
+
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':data_nascimento', $dataNascimento);
         $stmt->bindParam(':sobre_mim', $sobreMim);
-        $stmt->bindParam(':id', $usuarioId);
-        
-        // Bind dos parâmetros condicionais
-        if ($senha !== null) {
-            $stmt->bindParam(':senha', $senha);
+
+        if ($senha) {
+            $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+            $stmt->bindParam(':senha', $senhaHash);
         }
-        if ($fotoPerfil !== null) {
+
+        if ($fotoPerfil) {
             $stmt->bindParam(':foto_perfil', $fotoPerfil);
         }
-        
+
+        $stmt->bindParam(':id', $usuarioId);
+
         return $stmt->execute();
-    } catch (PDOException $e) {
-        error_log("Erro ao atualizar perfil: " . $e->getMessage());
-        return false;
     }
-}
+
     public function buscarUsuarioPorId($id)
     {
         $stmt = $this->pdo->prepare("SELECT * FROM usuarios WHERE id = :id");
@@ -308,9 +297,4 @@ public function buscarUsuarioPorEmail($email) {
         $stmt = $this->pdo->prepare("INSERT INTO feedbacks (usuario_id, email, opiniao) VALUES (?, ?, ?)");
         return $stmt->execute([$usuarioId, $email, $opiniao]);
     }
-    public function LastInsertId()
-{
-    $stmt = $this->pdo->prepare("SELECT LAST_INSERT_ID FROM usuarios ");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
 }

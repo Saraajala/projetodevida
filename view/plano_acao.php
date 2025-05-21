@@ -11,7 +11,7 @@ if (empty($_SESSION['usuario_id'])) {
 
 // $controller = new ProjetoController($pdo);
 $model = new ProjetoModel($pdo);
-$controller = new ProjetoController($model);
+$controller = new ProjetoController($pdo);
 
 $planoEditar = null;
 
@@ -55,9 +55,35 @@ $areas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8" />
     <title>Plano de Ação</title>
+    <link rel="stylesheet" href="../css/estilo_plano.css">
 </head>
 <body>
-    <h1>Plano de Ação</h1>
+    <header class="header-sobre">
+        <img src="../imagens/logo.png" alt="logo" class="logo">
+
+        <nav>
+            <ul class="menu-central">
+                <li><a href="view/teste_personalidade.php">Teste de personalidade</a></li>
+                <li><a href="view/form_planejamento.php">Planeamento do futuro</a></li>
+            </ul>
+        </nav>
+
+         <div class="perfil-wrapper">
+      <a href="../index.php" class="sair">Início</a>
+      <a href="../view/perfil.php" class="icone-perfil-link">
+        <img src="../imagens/usuario.png" alt="Perfil" class="icone-perfil">
+      </a>
+      <a href="logout.php" class="sair">Sair</a>
+    </div>
+    </header>
+
+    <div >
+        <img class="imagem-planodeacao" src="../imagens/planoo.png" alt="">
+        <h1 class="titulo-plano">PLANO DE AÇÃO</h1>
+    </div>
+
+<section>
+   <h2>ESTABELECENDO METAS</h2>
 
     <form method="POST">
         <input type="hidden" name="id" value="<?= $planoEditar ? htmlspecialchars($planoEditar['id']) : '' ?>">
@@ -82,7 +108,7 @@ $areas = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </button>
     </form>
 
-    <h2>Meus Planos de Ação</h2>
+   
 
     <?php if (!empty($planos)): ?>
         <table border="1" cellpadding="5" cellspacing="0">
@@ -123,5 +149,6 @@ $areas = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php else: ?>
         <p>Nenhum plano de ação cadastrado.</p>
     <?php endif; ?>
+</section>
 </body>
 </html>
