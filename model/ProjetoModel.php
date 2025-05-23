@@ -226,15 +226,24 @@ public function buscarUsuarioPorEmail($email) {
 
 
     // PROFISSÕES
+public function buscarTodasProfissoes() {
+    $stmt = $this->pdo->query("SELECT * FROM profissao ORDER BY nome");
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
-    public function buscarProfissoes($filtro)
-    {
-        $sql = "SELECT * FROM profissao WHERE LOWER(nome) = LOWER(:filtro)";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(':filtro', $filtro);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+public function buscarProfissaoPorId($id) {
+    $stmt = $this->pdo->prepare("SELECT * FROM profissao WHERE id = ?");
+    $stmt->execute([$id]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+public function buscarProfissoes($filtro) {
+    $sql = "SELECT * FROM profissao WHERE LOWER(nome) LIKE LOWER(:filtro) ORDER BY nome";
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->bindValue(':filtro', '%' . $filtro . '%');
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
     // Buscar planejamento do usuário
     public function buscarPorUsuario($usuario_id)

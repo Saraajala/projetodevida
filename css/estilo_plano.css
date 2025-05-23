@@ -10,7 +10,8 @@
 }
 
 body {
-    overflow-x: hidden; /* Evita a rolagem horizontal */
+    overflow-x: hidden;
+    /* Evita a rolagem horizontal */
     height: auto;
     display: flex;
     flex-direction: column;
@@ -30,6 +31,7 @@ main {
     background-color: var(--cor-primaria);
     padding: 10px 20px;
 }
+
 /* LOGO AJUSTADA */
 .logo {
     max-height: 60px;
@@ -43,6 +45,7 @@ main {
     list-style: none;
     margin: 0;
     padding: 0;
+    font-family: "Abel";
 }
 
 /* Itens do menu */
@@ -88,6 +91,7 @@ main {
     border: 1px solid var(--cor-quaternaria);
     padding: 0.3rem 0.8rem;
     border-radius: 15px;
+    font-family: "Abel";
 }
 
 .sair:hover {
@@ -96,12 +100,14 @@ main {
 }
 
 .imagem-planodeacao {
-    position: relative; /* Importante para o posicionamento absoluto do título */
+    position: relative;
+    /* Importante para o posicionamento absoluto do título */
     height: 450px;
     width: 1500px;
     display: flex;
     align-items: center;
-    justify-content: center; /* Garante centralização do conteúdo direto também */
+    justify-content: center;
+    /* Garante centralização do conteúdo direto também */
     overflow: hidden;
 }
 
@@ -119,3 +125,86 @@ main {
     text-align: center;
 }
 
+.estabelecendo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--cor-quaternaria);
+    font-family: "Newsreader";
+    font-size: 20px;
+}
+
+/* Seção da tabela */
+.tabela-metas {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 30px auto;
+    width: 90%;
+    max-width: 1000px;
+}
+
+/* Tabela estilizada */
+.tabela-metas table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--cor-quaternaria);
+    color: var(--cor-primaria);
+    font-family: 'Abel', sans-serif;
+    margin-bottom: 20px;
+}
+
+.tabela-metas th,
+.tabela-metas td {
+    border: 1px solid var(--cor-secundaria);
+    padding: 12px;
+    text-align: center;
+}
+
+.tabela-metas th {
+    background-color: var(--cor-terciaria);
+}
+
+.btn-adicionar {
+    background-color: transparent;
+    color: var(--cor-quaternaria);
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--cor-quaternaria);
+    border-radius: 15px;
+    font-family: 'Abel', sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+    align-self: center;
+    margin-top: 10px;
+    margin: 10px auto 0 auto;
+    display: block;
+}
+
+.btn-adicionar:hover {
+    background-color: var(--cor-quaternaria);
+    color: var(--cor-primaria);
+}
+
+.btn-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.plano {
+    color: var(--cor-quaternaria);
+    font-family: "Newsreader";
+    font-size: 20px;
+}
+
+/* Footer fixo no fundo */
+footer {
+    justify-content: space-between;
+    background-color: var(--cor-secundaria);
+    bottom: 0;
+    width: 100%;
+    color: white;
+    text-align: center;
+    box-sizing: border-box;
+}

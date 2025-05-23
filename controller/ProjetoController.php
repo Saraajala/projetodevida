@@ -232,10 +232,17 @@ class ProjetoController
     }
 
     // PROFISSÕES
-    public function buscarProfissoes($filtro)
-    {
-        return $this->projetoModel->buscarProfissoes($filtro);
-    }
+ public function listarTodasProfissoes() {
+    return $this->projetoModel->buscarTodasProfissoes();
+}
+
+public function buscarDetalhesProfissao($id) {
+    return $this->projetoModel->buscarProfissaoPorId($id);
+}
+
+public function buscarProfissoesPorTermo($termo) {
+    return $this->projetoModel->buscarProfissoes($termo);
+}
 
     public function buscarPlanejamento($usuario_id)
     {

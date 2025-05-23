@@ -63,8 +63,8 @@ $areas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         <nav>
             <ul class="menu-central">
-                <li><a href="view/teste_personalidade.php">Teste de personalidade</a></li>
-                <li><a href="view/form_planejamento.php">Planeamento do futuro</a></li>
+                <li><a href="teste_personalidade.php">Teste de personalidade</a></li>
+                <li><a href="form_planejamento.php">Planeamento do futuro</a></li>
             </ul>
         </nav>
 
@@ -82,9 +82,12 @@ $areas = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <h1 class="titulo-plano">PLANO DE AÇÃO</h1>
     </div>
 
-<section>
-   <h2>ESTABELECENDO METAS</h2>
 
+<section class="estabelecendo">   
+<h2>ESTABELECENDO METAS</h2>
+</section>
+
+<section class="tabela-metas">
     <form method="POST">
         <input type="hidden" name="id" value="<?= $planoEditar ? htmlspecialchars($planoEditar['id']) : '' ?>">
 
@@ -101,14 +104,16 @@ $areas = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <input type="text" name="passo2" placeholder="Passo 2" value="<?= $planoEditar ? htmlspecialchars($planoEditar['passo2']) : '' ?>" required>
         <input type="text" name="passo3" placeholder="Passo 3" value="<?= $planoEditar ? htmlspecialchars($planoEditar['passo3']) : '' ?>" required>
         <input type="text" name="como_irei_fazer" placeholder="Como irei fazer?" value="<?= $planoEditar ? htmlspecialchars($planoEditar['como_irei_fazer']) : '' ?>" required>
-        <input type="date" name="prazo" required value="<?= $planoEditar ? htmlspecialchars($planoEditar['prazo']) : '' ?>">
-
+        <input type="date" name="prazo" placeholder="Prazo" required value="<?= $planoEditar ? htmlspecialchars($planoEditar['prazo']) : '' ?>">
+<br><br>
+<div class="btn-wrapper">
         <button type="submit" name="<?= $planoEditar ? 'atualizar' : 'adicionar' ?>">
             <?= $planoEditar ? 'Atualizar' : 'Adicionar' ?>
         </button>
+    </div>
     </form>
 
-   
+   <br><br>
 
     <?php if (!empty($planos)): ?>
         <table border="1" cellpadding="5" cellspacing="0">
@@ -147,8 +152,13 @@ $areas = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </tbody>
         </table>
     <?php else: ?>
-        <p>Nenhum plano de ação cadastrado.</p>
+        <p class="plano">Nenhum plano de ação cadastrado.</p>
     <?php endif; ?>
 </section>
+
+<footer>
+    <p>© 2025 Todos os direitos reservados.</p>
+</footer>
+
 </body>
 </html>
